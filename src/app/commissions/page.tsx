@@ -247,7 +247,7 @@ export default function CommissionsPage() {
     {
       key: 'commissionRate',
       header: 'Commission / Incentive',
-      render: (c) => <span className="font-mono font-bold text-blue-600">{c.commissionRate || '4.5%'}</span>,
+      render: (c) => <span className="font-mono font-bold text-sky-600 dark:text-sky-400">{c.commissionRate || '4.5%'}</span>,
     },
     {
       key: 'bonus',
@@ -274,7 +274,7 @@ export default function CommissionsPage() {
               });
             }}
             type="button"
-            className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            className="p-1.5 text-slate-500 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-950/40 dark:hover:text-sky-400 rounded-lg transition-colors"
             title="Edit Commission Rule"
           >
             <Edit2 className="w-3.5 h-3.5" />
@@ -399,7 +399,7 @@ export default function CommissionsPage() {
               <button
                 onClick={() => setIsAddOpen(true)}
                 type="button"
-                className="inline-flex items-center space-x-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all"
+                className="inline-flex items-center space-x-2 px-4 py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow-sm shadow-sky-600/20 transition-all"
               >
                 <Plus className="w-4 h-4" />
                 <span>New Commission Rule</span>
@@ -409,7 +409,7 @@ export default function CommissionsPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-2 border-b border-slate-200 pb-3">
+        <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
           {[
             { key: 'FRC', label: 'Prepaid FRC (First Recharge)' },
             { key: 'OTF', label: 'Prepaid OTF (Over The Floor)' },
@@ -422,8 +422,8 @@ export default function CommissionsPage() {
               onClick={() => setActiveTab(t.key as any)}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 activeTab === t.key
-                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-600/20'
-                  : 'bg-surface text-slate-600 hover:bg-slate-50 border border-slate-200'
+                  ? 'bg-sky-600 text-white shadow-sm shadow-sky-600/25'
+                  : 'bg-surface text-slate-600 hover:bg-slate-50 border border-slate-200 dark:border-slate-700'
               }`}
             >
               {t.label}
@@ -509,7 +509,7 @@ export default function CommissionsPage() {
                     type="text"
                     value={editFormData.commissionRate}
                     onChange={(e) => setEditFormData({ ...editFormData, commissionRate: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono font-bold text-blue-600"
+                    className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono font-bold text-sky-600 dark:text-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
                     placeholder="e.g. 5.5% or ₹150"
                   />
                 </div>
@@ -520,7 +520,7 @@ export default function CommissionsPage() {
                     type="text"
                     value={editFormData.bonus}
                     onChange={(e) => setEditFormData({ ...editFormData, bonus: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono"
+                    className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
                     placeholder="e.g. ₹50"
                   />
                 </div>
@@ -536,7 +536,7 @@ export default function CommissionsPage() {
                   <button
                     type="submit"
                     disabled={editMutation.isPending}
-                    className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-sm"
+                    className="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-bold shadow-sm shadow-sky-600/20"
                   >
                     {editMutation.isPending ? 'Saving...' : 'Update Rule'}
                   </button>
@@ -568,17 +568,17 @@ export default function CommissionsPage() {
                 className="p-6 space-y-4 text-xs"
               >
                 {/* Circulation Scope Mode */}
-                <div className="p-3 bg-blue-50/70 rounded-xl border border-blue-100 flex items-center justify-between">
+                <div className="p-3 bg-sky-50/70 dark:bg-sky-950/40 rounded-xl border border-sky-100 dark:border-sky-800 flex items-center justify-between">
                   <div>
-                    <span className="font-bold text-blue-900 block">Circulation Scope</span>
-                    <span className="text-[11px] text-blue-700">
+                    <span className="font-bold text-sky-900 dark:text-sky-200 block">Circulation Scope</span>
+                    <span className="text-[11px] text-sky-700 dark:text-sky-300">
                       {isBulkMode ? 'Bulk Zone / All Circulation (Zone 0)' : 'Single Circle Rule'}
                     </span>
                   </div>
                   <button
                     type="button"
                     onClick={() => setIsBulkMode(!isBulkMode)}
-                    className="px-3 py-1.5 bg-blue-600 text-white rounded-lg font-bold text-[11px]"
+                    className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-bold text-[11px] transition-colors"
                   >
                     Switch to {isBulkMode ? 'Single Circle' : 'Bulk Zone'}
                   </button>
@@ -606,7 +606,7 @@ export default function CommissionsPage() {
                   <select
                     value={formData.categoryId}
                     onChange={(e) => setFormData({ ...formData, categoryId: Number(e.target.value) })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                    className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     {(categories || [
                       { id: 1, name: 'Category A (Standard Prepaid/Postpaid)' },
@@ -627,7 +627,7 @@ export default function CommissionsPage() {
                       type="number"
                       value={formData.masterCategoryId}
                       onChange={(e) => setFormData({ ...formData, masterCategoryId: Number(e.target.value) })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                      className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                       required
                     />
                   </div>
@@ -637,7 +637,7 @@ export default function CommissionsPage() {
                       type="text"
                       value={formData.denomination}
                       onChange={(e) => setFormData({ ...formData, denomination: e.target.value })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                      className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                       required
                     />
                   </div>
@@ -650,7 +650,7 @@ export default function CommissionsPage() {
                       type="text"
                       value={formData.sellerCommission}
                       onChange={(e) => setFormData({ ...formData, sellerCommission: e.target.value })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono font-bold text-blue-600"
+                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono font-bold text-sky-600 dark:text-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
                       placeholder="e.g. 4.5"
                       required
                     />
@@ -661,7 +661,7 @@ export default function CommissionsPage() {
                       type="text"
                       value={formData.fraCommission}
                       onChange={(e) => setFormData({ ...formData, fraCommission: e.target.value })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono"
+                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
                       placeholder="e.g. 1.0"
                     />
                   </div>
@@ -674,7 +674,7 @@ export default function CommissionsPage() {
                       type="text"
                       value={formData.subCommission}
                       onChange={(e) => setFormData({ ...formData, subCommission: e.target.value })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono"
+                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
                       placeholder="e.g. 0.5"
                     />
                   </div>
@@ -684,7 +684,7 @@ export default function CommissionsPage() {
                       type="text"
                       value={formData.tds}
                       onChange={(e) => setFormData({ ...formData, tds: e.target.value })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono"
+                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
                       placeholder="e.g. 5.0"
                     />
                   </div>
@@ -695,7 +695,7 @@ export default function CommissionsPage() {
                   <select
                     value={formData.dtype}
                     onChange={(e) => setFormData({ ...formData, dtype: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                    className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="PERCENTAGE">Percentage (%)</option>
                     <option value="FLAT">Flat Amount (₹)</option>
@@ -712,7 +712,7 @@ export default function CommissionsPage() {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-sm"
+                    className="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-bold shadow-sm shadow-sky-600/20 transition-all"
                   >
                     Proceed to OTP Verification &rarr;
                   </button>
