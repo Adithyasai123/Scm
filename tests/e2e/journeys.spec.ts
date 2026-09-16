@@ -82,7 +82,7 @@ test.describe('SCM Administrative Journeys', () => {
     });
 
     await page.goto('http://localhost:3000');
-    await expect(page.locator('h1')).toContainText('Sales Channel Management (SCM) Overview');
+    await expect(page.locator('h1')).toContainText('SCM Overview');
   });
 
   test('Journey 1: User Administration & OTP Verification Workflow', async ({ page }) => {
