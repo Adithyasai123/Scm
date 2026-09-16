@@ -1,0 +1,1008 @@
+[
+  {
+    "parents": " > Commission Configuration > Prepaid Commission (FRC & OTF)",
+    "name": "Get Category",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/getCategory",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Prepaid Commission (FRC & OTF)",
+    "name": "Get Circles Info (by HRMS)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/getCirclesInfo?hrmsId={{hrmsId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Prepaid Commission (FRC & OTF)",
+    "name": "Get Zone Based Circles",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/zonebasedcircles?zoneId={{zoneId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Prepaid Commission (FRC & OTF)",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"PrepaidFrc\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Prepaid Commission (FRC & OTF)",
+    "name": "Validate OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/validateOtp?otp={{otp}}&operation=10069&msisdn={{msisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Prepaid Commission (FRC & OTF)",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"PrepaidOtf\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Prepaid Commission (FRC & OTF)",
+    "name": "Save Commission Config (FRC)",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/saveCommissionConfig",
+    "body": "{\n  \"masterCategoryId\": \"{{masterCategoryId}}\",\n  \"circleId\": \"{{circleId}}\",\n  \"sellerCommission\": \"{{sellerCommission}}\",\n  \"fraCommission\": \"{{fraCommission}}\",\n  \"subCommission\": \"{{subCommission}}\",\n  \"tds\": \"{{tds}}\",\n  \"denomination\": \"{{denomination}}\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"commissionType\": \"{{commissionType}}\",\n  \"dtype\": \"{{dtype}}\",\n  \"createdGuiUser\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Prepaid Commission (FRC & OTF)",
+    "name": "Save Multiple Commission Config (All Circulation)",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/savemultipleCommissionConfig?zoneId=0",
+    "body": "{\n  \"masterCategoryId\": \"{{masterCategoryId}}\",\n  \"circleId\": \"{{circleId}}\",\n  \"sellerCommission\": \"{{sellerCommission}}\",\n  \"fraCommission\": \"{{fraCommission}}\",\n  \"subCommission\": \"{{subCommission}}\",\n  \"tds\": \"{{tds}}\",\n  \"denomination\": \"{{denomination}}\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"commissionType\": \"{{commissionType}}\",\n  \"dtype\": \"{{dtype}}\",\n  \"createdGuiUser\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Prepaid Commission (FRC & OTF)",
+    "name": "Save Multiple Commission Config (Zone)",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/savemultipleCommissionConfig?zoneId={{zoneId}}",
+    "body": "{\n  \"masterCategoryId\": \"{{masterCategoryId}}\",\n  \"circleId\": \"{{circleId}}\",\n  \"sellerCommission\": \"{{sellerCommission}}\",\n  \"fraCommission\": \"{{fraCommission}}\",\n  \"subCommission\": \"{{subCommission}}\",\n  \"tds\": \"{{tds}}\",\n  \"denomination\": \"{{denomination}}\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"commissionType\": \"{{commissionType}}\",\n  \"dtype\": \"{{dtype}}\",\n  \"createdGuiUser\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Postpaid Commission",
+    "name": "Get Category",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/getCategory",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Postpaid Commission",
+    "name": "Get Circles Info (by HRMS)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/getCirclesInfo?hrmsId={{hrmsId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Postpaid Commission",
+    "name": "Get Zone Based Circles",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/zonebasedcircles?zoneId={{zoneId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Postpaid Commission",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Postpaid\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Postpaid Commission",
+    "name": "Validate OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/validateOtp?otp={{otp}}&operation=10069&msisdn={{msisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Postpaid Commission",
+    "name": "Postpaid Commission Config",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/postpaidCommissionConfig",
+    "body": "{\n  \"categoryId\": \"{{categoryId}}\",\n  \"circleId\": \"{{circleId}}\",\n  \"tdsAmount\": \"{{tdsAmount}}\",\n  \"fraCommission\": \"{{fraCommission}}\",\n  \"subFraCommission\": 0,\n  \"actualCommission\": \"{{actualCommission}}\",\n  \"retailerCommission\": 0,\n  \"sellerLevel\": \"{{sellerLevel}}\",\n  \"cap_limit\": \"{{cap_limit}}\",\n  \"createdGuiUser\": \"{{username}}\",\n  \"zoneId\": \"{{zoneId}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Landline Commission",
+    "name": "Get Category",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/getCategory",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Landline Commission",
+    "name": "Get Circles Info (by HRMS)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/getCirclesInfo?hrmsId={{hrmsId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Landline Commission",
+    "name": "Get Zone Based Circles",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/zonebasedcircles?zoneId={{zoneId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Landline Commission",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Landline\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Landline Commission",
+    "name": "Validate OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/validateOtp?otp={{otp}}&operation=10069&msisdn={{msisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Landline Commission",
+    "name": "Landline Commission Config",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/landlineCommissionConfig",
+    "body": "{\n  \"categoryId\": \"{{categoryId}}\",\n  \"circleId\": \"{{circleId}}\",\n  \"tdsAmount\": \"{{tdsAmount}}\",\n  \"fraCommission\": 0,\n  \"subFraCommission\": 0,\n  \"retailerCommission\": 0,\n  \"sellerLevel\": \"{{sellerLevel}}\",\n  \"commissionId\": \"{{commissionId}}\",\n  \"commissionAmount\": \"{{commissionAmount}}\",\n  \"fromAmount\": \"{{fromAmount}}\",\n  \"toAmount\": \"{{toAmount}}\",\n  \"dtype\": \"{{dtype}}\",\n  \"zoneId\": \"{{zoneId}}\",\n  \"createdGuiUser\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Get Category",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/getCategory",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Fetch Prepaid FRC Commission",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/fetchCommission?denomination={{denomination}}&circleId={{circleId}}&categoryId={{categoryId}}&commissionType=1&username={{username}}&dtype={{dtype}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Fetch Prepaid OTF Commission",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/fetchPrepaidOTFCommission?denomination={{denomination}}&circleId={{circleId}}&categoryId={{categoryId}}&commissionType={{commissionType}}&username={{username}}&dtype={{dtype}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Fetch Postpaid Commission",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/fetchPostpaidCommission?circleId={{circleId}}&category={{categoryId}}&sellerLevel={{sellerLevel}}&username={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Fetch Landline Commission",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/fetchLandlineCommission",
+    "body": "{\n  \"circleId\": \"{{circleId}}\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"fromAmount\": \"{{fromAmount}}\",\n  \"toAmount\": \"{{toAmount}}\",\n  \"guiUsername\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Modify_PrepaidFRC\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Validate OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/validateOtp?otp={{otp}}&operation=10069&msisdn={{msisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Modify_PrepaidOTF\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Modify_Postpaid\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Modify_Landline\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"DeleteprepaidOtf\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Update Commission Config",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/updateCommissionConfig",
+    "body": "{\n  \"commissionId\": \"{{commissionId}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Update Postpaid Commission",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/updatePostpaidCommission",
+    "body": "{\n  \"commissionId\": \"{{commissionId}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Update Landline Commission",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/updateLandlineCommission",
+    "body": "{\n  \"commissionId\": \"{{commissionId}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Delete Commission Config",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/deleteCommissionConfig?commissionId={{commissionId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Delete Postpaid Commission",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/deletePostpaidCommission?commissionId={{commissionId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Commission Modification (Search & Edit)",
+    "name": "Delete Landline Commission",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/deleteLandlineCommission?commissionId={{commissionId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Franchise Add Balance",
+    "name": "Franchise Add Balance Transactions",
+    "method": "GET",
+    "url": "https://ui.example.com/scmfmis-reports-api/scm-franchise-gui/franchiseAddBalanceTransactions?circle={{circleId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Franchise Add Balance",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"FranchiseAddbalanceApprove\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Franchise Add Balance",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"FranchiseAddbalanceReject\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Franchise Add Balance",
+    "name": "Validate OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/validateOtp?otp={{otp}}&operation=10069&msisdn={{msisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Franchise Add Balance",
+    "name": "Approve Franchise Add Balance",
+    "method": "POST",
+    "url": "https://ui.example.com/scmfmis-reports-api/scm-franchise-gui/franchiseAddBalance/approve",
+    "body": "{\n  \"fabSeqList\": [\"{{fabSeq}}\"],\n  \"actionUser\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Commission Configuration > Franchise Add Balance",
+    "name": "Reject Franchise Add Balance",
+    "method": "POST",
+    "url": "https://ui.example.com/scmfmis-reports-api/scm-franchise-gui/franchiseAddBalance/reject",
+    "body": "{\n  \"fabSeqList\": [\"{{fabSeq}}\"],\n  \"actionUser\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"UserCreation\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Modifyuseredit\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Modifyuserpermission\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Modifyuserstatus\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"ChangePassword\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Validate OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/validateOtp?otp={{otp}}&operation=10069&msisdn={{msisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Get Zones",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/zones",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Get Zone Based Circles",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/zonebasedcircles?zoneId={{zoneId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Get Circles Info (by HRMS)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/getCirclesInfo?hrmsId={{hrmsId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Get Circles",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/circles",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Get SSAs (by Circle)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/ssas?circleId={{circleId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > OTP & Master Data",
+    "name": "Fetch Username",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/fetchusername?username={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > User Creation",
+    "name": "Create User",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/usercreation",
+    "body": "{\n  \"userId\": \"{{userId}}\",\n  \"hrmsId\": \"{{hrmsId}}\",\n  \"username\": \"{{username}}\",\n  \"mobileNumber\": \"{{msisdn}}\",\n  \"createdBy\": \"{{createdBy}}\",\n  \"updatedBy\": null,\n  \"firstName\": \"{{firstName}}\",\n  \"lastName\": \"{{lastName}}\",\n  \"address\": \"{{address}}\",\n  \"status\": {{status}},\n  \"cdt\": \"{{cdt}}\",\n  \"mdt\": \"{{mdt}}\",\n  \"roleId\": {{roleId}},\n  \"passwordChangeDate\": \"{{passwordChangeDate}}\",\n  \"ssaId\": {{ssaId}},\n  \"circleId\": {{circleId}},\n  \"dob\": \"{{dob}}\",\n  \"password\": \"{{newPassword}}\",\n  \"ipAddress\": \"{{ipAddress}}\",\n  \"expiredate\": \"{{expiredate}}\",\n  \"userIpAddress\": \"{{userIpAddress}}\",\n  \"loginStatus\": \"1\",\n  \"zoneId\": {{zoneId}},\n  \"roleName\": null,\n  \"permissions\": {\n    \"roleId\": {{roleId}},\n    \"username\": \"{{username}}\",\n    \"hrmsId\": \"{{hrmsId}}\",\n    \"roleName\": null,\n    \"dealerPermissions\": {{dealerPermissions}},\n    \"walletPermissions\": {{walletPermissions}},\n    \"userPermissions\": {{userPermissions}},\n    \"commissionPermissions\": {{commissionPermissions}},\n    \"plansNumberpermissions\": {{plansNumberpermissions}},\n    \"reportsPermissions\": {{reportsPermissions}},\n    \"stockCheck\": {{stockCheck}},\n    \"dealerMpinReset\": {{dealerMpinReset}},\n    \"franchiseAddBalance\": {{franchiseAddBalance}},\n    \"bulkRecharge\": {{bulkRecharge}},\n    \"varepReports\": {{varepReports}},\n    \"userActivityReports\": {{userActivityReports}},\n    \"dealerStatus\": {{dealerStatus}},\n    \"transactionStatus\": {{transactionStatus}},\n    \"topupReversal\": {{topupReversal}},\n    \"simSaleUpload\": {{simSaleUpload}},\n    \"simInventory\": {{simInventory}},\n    \"pendingClearence\": {{pendingClearence}},\n    \"inReconsilation\": {{inReconsilation}},\n    \"mobileApp\": {{mobileApp}},\n    \"deferredCommission\": {{deferredCommission}},\n    \"cbp\": {{cbp}},\n    \"simUpgrade\": {{simUpgrade}},\n    \"mnp\": {{mnp}},\n    \"frcStv\": {{frcStv}},\n    \"bulk_purge\": {{bulk_purge}},\n    \"e_auction\": {{e_auction}},\n    \"caf_postpaid\": null,\n    \"denominations\": {{denominations}},\n    \"prepaidCommissions\": {{prepaidCommissions}},\n    \"postpaidCommissions\": {{postpaidCommissions}},\n    \"landlineCommissions\": {{landlineCommissions}},\n    \"FOSCreation\": {{FOSCreation}}\n  }\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > User Fetch & Search",
+    "name": "Fetch User (by UserName)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/getUser/{{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > User Fetch & Search",
+    "name": "Get User by HRMS & Username",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/getUserwithHrmsIdandUsername?hrmsId={{hrmsId}}&username={{username}}&guiUsername={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > User Fetch & Search",
+    "name": "Modify User",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/modifyUser",
+    "body": "{\n  \"username\": \"{{username}}\",\n  \"hrmsId\": \"{{hrmsId}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > Permissions & Status",
+    "name": "Get User Permission",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/getUserPermissionwithHrmsIdandUsername?hrmsId={{hrmsId}}&username={{username}}&guiUsername={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > Permissions & Status",
+    "name": "Modify Permissions",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/modifyPermissions?guiUser={{username}}",
+    "body": "{\n  \"username\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > Permissions & Status",
+    "name": "User Status Check",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/userStatusCheck?username={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > Permissions & Status",
+    "name": "Change User Status",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/userStatusChangewithHrmsIdandUsername?hrmsId={{hrmsId}}&username={{username}}&guiUsername={{username}}&status={{status}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > Password & Logout",
+    "name": "Change Password",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/changePassword",
+    "body": "{\n  \"hrmsId\": \"{{hrmsId}}\",\n  \"username\": \"{{username}}\",\n  \"oldPassword\": \"{{oldPassword}}\",\n  \"newPassword\": \"{{newPassword}}\",\n  \"operation\": \"{{operation}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > User Management > Password & Logout",
+    "name": "Logout",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/scmlogout?username={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Dealercreation\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Modifydealer\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"DealerStatus\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"DealerHierarchyChange\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"DealerMpinreset\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Validate OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/validateOtp?otp={{otp}}&operation=10069&msisdn={{msisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Get Circles Info (by HRMS)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/getCirclesInfo?hrmsId={{hrmsId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Get Circles",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/circles",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Get SSAs (by Circle)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/ssas?circleId={{circleId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Get Dealer Type",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/dealerType",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Get Category",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/getCategory",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Get Category by Dealer",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/getCategoryByDealer/{{dealerType}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Get Franchise",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/franchise?msisdn={{franchiseMsisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Master Data & OTP",
+    "name": "Get SubFranchise",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/subFranchise?msisdn={{subFranchiseMsisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Creation",
+    "name": "Create Dealer",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/createDealer",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Franchise Creation",
+    "name": "Create Dealer",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/createDealer",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Search & Edit",
+    "name": "Fetch Dealer",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/fetchDealer?mobile={{msisdn}}&gui_username={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Search & Edit",
+    "name": "Fetch Dealer Data",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/fetchDealerData?msisdn={{msisdn}}&gui_username={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Search & Edit",
+    "name": "Update Dealer",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/updateDealer",
+    "body": "{\n  \"dealerId\": \"{{dealerId}}\",\n  \"dealerCode\": \"{{dealerCode}}\",\n  \"scmMsisdn\": \"{{scmMsisdn}}\",\n  \"firstName\": \"{{firstName}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Search & Edit",
+    "name": "Check Dealer by PAN",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/checkDealerByPan?panId={{panId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Search & Edit",
+    "name": "Check Dealer by Aadhaar",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/checkDealerByAadhar?aadharId={{aadhaarId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Tree / Status / Hierarchy / MPIN",
+    "name": "Dealer List",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/dealerList?msisdn={{msisdn}}&username={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Tree / Status / Hierarchy / MPIN",
+    "name": "Fetch Dealer (by MSISDN)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/dealer/{{msisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Tree / Status / Hierarchy / MPIN",
+    "name": "Dealer Status Check",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/dealerStatusCheck?msisdn={{msisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Tree / Status / Hierarchy / MPIN",
+    "name": "Change Dealer Status",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/dealerStatusChange?msisdn={{msisdn}}&username={{username}}&status={{status}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Tree / Status / Hierarchy / MPIN",
+    "name": "Purge Dealer",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/purgeDealer?msisdn={{msisdn}}&username={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Tree / Status / Hierarchy / MPIN",
+    "name": "Dealer With Mobile (Source)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/dealerWithMobile?msisdn={{srcMsisdn}}&guiUsername={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Tree / Status / Hierarchy / MPIN",
+    "name": "Dealer With Mobile (Dest)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/dealerWithMobile?msisdn={{destMsisdn}}&guiUsername={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Tree / Status / Hierarchy / MPIN",
+    "name": "Change Dealer Hierarchy",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/changeDealerHierarchy?srcMsisdn={{srcMsisdn}}&parentMsisdn={{destMsisdn}}&guiUsername={{username}}&type={{type}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Dealer Management > Dealer Tree / Status / Hierarchy / MPIN",
+    "name": "Reset Dealer MPIN",
+    "method": "PUT",
+    "url": "https://ui.example.com/scm-dealer-api/scm-dealer-api/resetMpin?msisdn={{msisdn}}&username={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Addnewplan\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Denominationconfiguration\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"ADD MNP\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"AddnumberSeries\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"Addplan\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"ModifyMnp\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"ModfifynumberSeries\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"DeleteNumberseries\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Send OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/sendOtp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"operation\": \"10069\",\n  \"topic\": \"DeleteMnp\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Validate OTP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/validateOtp?otp={{otp}}&operation=10069&msisdn={{msisdn}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Get Circles Info (by HRMS)",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-user-api/scm-user-api/getCirclesInfo?hrmsId={{hrmsId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Master Data & OTP",
+    "name": "Get Zone Based Circles",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/zonebasedcircles?zoneId={{zoneId}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Plan Configuration",
+    "name": "Download/Get Plans",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/getplans",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Plan Configuration",
+    "name": "Add Plan",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/addplan?username={{username}}",
+    "body": "{\n  \"operator\": \"{{operator}}\",\n  \"denomination\": \"{{denomination}}\",\n  \"talkvalue\": \"{{talkvalue}}\",\n  \"country\": \"{{country}}\",\n  \"start_date\": \"{{start_date}}\",\n  \"end_date\": \"{{end_date}}\",\n  \"type\": \"{{type}}\",\n  \"description\": \"{{description}}\",\n  \"tab_name\": \"{{tab_name}}\",\n  \"circle\": \"{{circle}}\",\n  \"validity\": \"{{validity}}\",\n  \"from_date\": \"{{from_date}}\",\n  \"to_date\": \"{{to_date}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Plan Configuration",
+    "name": "Update Plan",
+    "method": "PUT",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/updateplan/{{sno}}?username={{username}}",
+    "body": "{\n  \"sno\": \"{{sno}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Plan Configuration",
+    "name": "Delete Plan",
+    "method": "DELETE",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/deleteplan/{{sno}}?username={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Denomination Configuration",
+    "name": "Fetch Recharge Plan",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/rechargePlan?price={{price}}&circleId={{circleId}}&planType={{planType}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Denomination Configuration",
+    "name": "Save Denomination",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/saveDenomination",
+    "body": "{\n  \"rechargePlanName\": \"{{rechargePlanName}}\",\n  \"planType\": \"{{planType}}\",\n  \"price\": \"{{price}}\",\n  \"createdBy\": \"{{username}}\",\n  \"validity\": \"{{validity}}\",\n  \"description\": \"{{description}}\",\n  \"bundleName\": \"{{bundleName}}\",\n  \"bucketId\": \"{{bucketId}}\",\n  \"faceValue\": \"{{faceValue}}\",\n  \"netValue\": \"{{netValue}}\",\n  \"cardGroup\": \"{{cardGroup}}\",\n  \"varepDenom\": \"{{varepDenom}}\",\n  \"circleId\": \"{{circleId}}\",\n  \"vasDenom\": \"{{vasDenom}}\",\n  \"varepGroup\": \"{{varepGroup}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Denomination Configuration",
+    "name": "Save Multiple Denominations (Zone 0)",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/saveMultipleDenominations?zoneId=0",
+    "body": "{\n  \"rechargePlanName\": \"{{rechargePlanName}}\",\n  \"planType\": \"{{planType}}\",\n  \"price\": \"{{price}}\",\n  \"createdBy\": \"{{username}}\",\n  \"validity\": \"{{validity}}\",\n  \"description\": \"{{description}}\",\n  \"bundleName\": \"{{bundleName}}\",\n  \"bucketId\": \"{{bucketId}}\",\n  \"faceValue\": \"{{faceValue}}\",\n  \"netValue\": \"{{netValue}}\",\n  \"cardGroup\": \"{{cardGroup}}\",\n  \"varepDenom\": \"{{varepDenom}}\",\n  \"circleId\": \"{{circleId}}\",\n  \"vasDenom\": \"{{vasDenom}}\",\n  \"varepGroup\": \"{{varepGroup}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Denomination Configuration",
+    "name": "Save Multiple Denominations (Zone)",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-plans-api/scm-product-api/saveMultipleDenominations?zoneId={{zoneId}}",
+    "body": "{\n  \"rechargePlanName\": \"{{rechargePlanName}}\",\n  \"planType\": \"{{planType}}\",\n  \"price\": \"{{price}}\",\n  \"createdBy\": \"{{username}}\",\n  \"validity\": \"{{validity}}\",\n  \"description\": \"{{description}}\",\n  \"bundleName\": \"{{bundleName}}\",\n  \"bucketId\": \"{{bucketId}}\",\n  \"faceValue\": \"{{faceValue}}\",\n  \"netValue\": \"{{netValue}}\",\n  \"cardGroup\": \"{{cardGroup}}\",\n  \"varepDenom\": \"{{varepDenom}}\",\n  \"circleId\": \"{{circleId}}\",\n  \"vasDenom\": \"{{vasDenom}}\",\n  \"varepGroup\": \"{{varepGroup}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > MNP Configuration",
+    "name": "Find MNP Data",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/findMnpData?msisdn={{msisdn}}&username={{username}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > MNP Configuration",
+    "name": "Save MNP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/savemnp",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"recipientNo\": 142,\n  \"circleId\": \"{{circleId}}\",\n  \"username\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > MNP Configuration",
+    "name": "Modify MNP Data",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/modifyMnpData",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"recipientNo\": 142,\n  \"circleId\": \"{{circleId}}\",\n  \"username\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > MNP Configuration",
+    "name": "Delete MNP",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/deleteMnp?msisdn={{msisdn}}&username={{username}}",
+    "body": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"recipientNo\": 142,\n  \"circleId\": \"{{circleId}}\",\n  \"username\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Number Series Configuration",
+    "name": "Get Number Series",
+    "method": "GET",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/getnumberseries?username={{username}}&series={{numberSeries}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Number Series Configuration",
+    "name": "Add Number Series",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/addnumberseries?username={{username}}",
+    "body": "{\n  \"circleId\": \"{{circleId}}\",\n  \"numberSeries\": \"{{numberSeries}}\",\n  \"numberSeriesId\": \"{{numberSeriesId}}\",\n  \"inId\": 1,\n  \"username\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Number Series Configuration",
+    "name": "Save Number Series (Edit)",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/saveNumberSeries",
+    "body": "{\n  \"zoneId\": \"{{zoneId}}\",\n  \"circleId\": \"{{circleId}}\",\n  \"seqNo\": \"{{seqNo}}\",\n  \"number_series\": \"{{numberSeries}}\",\n  \"inId\": \"{{inId}}\",\n  \"username\": \"{{username}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Number Series Configuration",
+    "name": "Edit Number Series",
+    "method": "PUT",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/editnumberseries?username={{username}}",
+    "body": "{\n  \"numberSeries\": \"{{numberSeries}}\",\n  \"inId\": \"{{inId}}\",\n  \"circleId\": \"{{circleId}}\",\n  \"username\": \"{{username}}\",\n  \"numberSeriesId\": \"{{numberSeriesId}}\"\n}",
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Plan & Number Configuration > Number Series Configuration",
+    "name": "Purge Number Series",
+    "method": "DELETE",
+    "url": "https://ui.example.com/scm-db-api/masterdata-db-api/purgenumberseries?username={{username}}&series={{numberSeries}}",
+    "body": null,
+    "sampleResponses": []
+  },
+  {
+    "parents": " > Wallet Management",
+    "name": "Wallet Adjustment",
+    "method": "POST",
+    "url": "https://ui.example.com/scm-stock-api/stock-api/walletAdjustment",
+    "body": "{\n  \"dlr_msisdn\": \"{{msisdn}}\",\n  \"adjustment_type\": {{adjustment_type}},\n  \"adjustment_amount\": {{adjustment_amount}},\n  \"wallet_type\": {{wallet_type}},\n  \"gui_user\": \"{{gui_user}}\",\n  \"remarks\": \"{{remarks}}\"\n}",
+    "sampleResponses": []
+  }
+]

@@ -1,0 +1,650 @@
+AI-Native UI Developer Hackathon
+Challenge: Build an AI-Generated Sales Channel Management Portal
+Objective
+Build a 
+production-quality responsive web application
+ for the Sales Channel Management (SCM) system using the supplied 
+SCM_APIs.postman_collection.json
+ as the API contract.
+The candidate must use an 
+AI coding agent as the primary development mechanism
+.
+The challenge is intentionally designed to evaluate:
+Requirement → AI Prompt → UI Design → AI Implementation → API Integration → AI Tests → Validation → AI-assisted Debugging → Human Code Review
+This follows the expected development philosophy in the AI-Native UI Engineer role.
+1. Hackathon Brief
+You are given:
+Input 1:
+ AI-Native UI Engineer role expectations
+Input 2:
+ 
+SCM_APIs.postman_collection.json
+The Postman collection represents APIs from an existing Sales Channel Management application.
+Your job is to 
+design and build the frontend from the API contracts
+, rather than being given Figma screens.
+The application should provide a coherent SCM administration portal with:
+Dashboard
+User Management
+Dealer Management
+Commission Configuration
+Plan & Number Configuration
+OTP verification workflows
+Search/filter/edit workflows
+Form validation
+API error handling
+Responsive UI
+Role/permission-aware navigation
+The API collection contains separate API domains including user, database/master-data, plans, dealer and franchise/report APIs.
+2. Mandatory AI-Native Requirement
+The candidate MUST use AI to design and implement the application.
+Allowed tools include:
+Claude Code
+Cursor
+GitHub Copilot
+Windsurf
+Gemini Code Assist
+OpenAI Codex
+Other repository-level AI coding agents
+These are consistent with the tools listed in the supplied role definition.
+Important
+The candidate 
+must not simply use AI as autocomplete
+.
+They should demonstrate:
+Requirement decomposition
+UI/UX design through AI
+Architecture generation
+Component generation
+API integration
+Test generation
+Debugging through AI
+Code review
+Iterative refinement
+The role explicitly expects the candidate to provide context and specifications to AI rather than simply asking it to "build the whole application."
+3. Hackathon Duration
+Recommended
+6–8 hours
+For a recruitment hackathon:
+Phase
+Time
+API analysis
+45 min
+UX/UI design
+60 min
+Architecture & setup
+30 min
+Implementation
+3–4 hrs
+Testing
+60 min
+Code review & documentation
+30 min
+Demo
+30 min
+4. Technology Requirement
+Mandatory
+React
+TypeScript
+Modern CSS/UI framework
+REST API integration
+Git
+Responsive design
+Preferred
+Next.js
+React Query/TanStack Query
+React Hook Form
+Zod
+Tailwind CSS
+shadcn/ui or equivalent component system
+Vitest/Jest
+React Testing Library
+Playwright
+The supplied role specifically identifies React, TypeScript, REST API integration, responsive UI, automated testing and debugging as mandatory capabilities.
+5. Part A — AI-Driven UI/UX Design
+The candidate should 
+not receive predefined screens
+.
+They must use AI to design the UI.
+Expected screens
+A. SCM Dashboard
+Create a dashboard containing:
+Total Users
+Active Users
+Total Dealers
+Active Dealers
+Pending Actions
+Commission Configurations
+Plans
+Recent Activities
+Include appropriate charts/cards where meaningful.
+B. User Management
+Design:
+User List
+Search
+Filter
+Status
+Role
+Zone
+Circle
+SSA
+Pagination
+Edit
+View
+Create User
+Fields should be derived from the API contract, including concepts such as:
+HRMS ID
+Username
+Mobile
+First Name
+Last Name
+Address
+DOB
+Role
+Zone
+Circle
+SSA
+Password
+Status
+Permissions
+The collection's User Creation API contains these fields and a substantial permissions structure.
+C. Dealer Management
+Create screens for:
+Dealer search
+Dealer creation
+Dealer edit
+Dealer status
+Dealer hierarchy
+MPIN reset
+The API collection specifically contains dealer hierarchy and MPIN-reset functionality.
+D. Commission Management
+Create a Commission Configuration experience supporting:
+Prepaid FRC
+Prepaid OTF
+Postpaid
+Landline
+Commission Search/Edit
+Franchise Add Balance
+The API collection explicitly groups these commission workflows.
+For example, the Prepaid Commission flow includes:
+Get Category → Get Circles → Send OTP → Validate OTP → Save Commission
+and supports both individual and multiple commission configurations.
+E. Plan & Number Configuration
+Create:
+Plan list
+Add Plan
+Edit Plan
+Delete Plan
+Denomination configuration
+MNP configuration
+Number Series configuration
+The supplied APIs include Plan CRUD operations and denomination configuration.
+The Number Series API supports getting, adding and editing number series.
+6. Part B — OTP Workflow
+This is an important evaluation area.
+The candidate must understand and implement the OTP workflow rather than treating each API independently.
+The collection states that most write operations follow:
+Send OTP
+     ↓
+Enter OTP
+     ↓
+Validate OTP
+     ↓
+Perform Mutation
+     ↓
+Success
+The Postman collection explicitly defines Send OTP and Validate OTP operations and uses operation/topic combinations for different business operations.
+UI expectation
+When a user performs a protected operation:
+Step 1
+Display confirmation.
+Step 2
+Trigger Send OTP.
+Step 3
+Display OTP modal.
+Step 4
+Validate OTP.
+Step 5
+Execute the requested mutation.
+Step 6
+Display success/failure.
+The UI should prevent the mutation from being submitted before successful OTP validation.
+7. Part C — API Integration
+The candidate must 
+derive the frontend API layer from the Postman collection
+.
+They should not hardcode API calls directly into components.
+Expected architecture:
+UI Component
+     ↓
+Feature Hook
+     ↓
+API Service
+     ↓
+HTTP Client
+     ↓
+REST API
+For example:
+CommissionForm
+      ↓
+useSaveCommission()
+      ↓
+commissionApi.save()
+      ↓
+HTTP Client
+      ↓
+scm-product-api
+The collection uses separate API bases such as:
+scm-user-api
+scm-db-api
+scm-plans-api
+scm-dealer-api
+scmfmis-reports-api
+8. Part D — API Contract Abstraction
+A strong candidate should recognize that the Postman collection contains repeated patterns.
+For example:
+GET Master Data
+        ↓
+Select Zone
+        ↓
+Select Circle
+        ↓
+Select SSA
+and:
+Send OTP
+Validate OTP
+Execute Action
+Instead of implementing these repeatedly, create reusable abstractions.
+Expected reusable components
+<ZoneSelector />
+<CircleSelector />
+<SSASelector />
+<OTPVerificationModal />
+<ConfirmationDialog />
+<SearchToolbar />
+<DataTable />
+<StatusBadge />
+<PermissionGuard />
+<FormSection />
+<ApiError />
+<LoadingState />
+9. Part E — Permission-Based UI
+The API collection contains numerous permission fields such as:
+dealerPermissions
+walletPermissions
+userPermissions
+commissionPermissions
+plansNumberpermissions
+reportsPermissions
+dealerMpinReset
+franchiseAddBalance
+mnp
+prepaidCommissions
+postpaidCommissions
+landlineCommissions
+FOSCreation
+These appear in the User Creation permission payload.
+The candidate should build a reusable authorization mechanism.
+Example:
+<PermissionGuard permission="commissionPermissions">
+    
+<CommissionConfiguration />
+</PermissionGuard>
+The navigation should dynamically show/hide modules based on permissions.
+10. Part F — Responsive Design
+The application should work on:
+Desktop
+1920 × 1080
+Laptop
+1366 × 768
+Tablet
+768 × 1024
+Mobile
+390 × 844
+The candidate should demonstrate that the application is not merely a desktop admin template.
+11. Part G — UX Quality
+Evaluate:
+Navigation
+Clear information architecture
+Breadcrumbs
+Logical grouping
+Consistent navigation
+Forms
+Inline validation
+Required-field indicators
+Good field grouping
+Meaningful error messages
+Disabled state while submitting
+Tables
+Search
+Filtering
+Sorting where appropriate
+Pagination
+Empty state
+Loading state
+Error state
+API states
+Every important API-driven screen should support:
+Loading
+Success
+Empty
+Error
+Retry
+12. Part H — AI-Generated Testing
+Testing is 
+mandatory
+, not optional.
+The supplied JD explicitly expects AI-generated unit, integration and end-to-end tests.
+Minimum
+Unit tests
+Test:
+Form validation
+Permission logic
+Utility functions
+OTP state machine
+API response transformation
+Component tests
+Test:
+User form
+Dealer form
+Commission form
+OTP modal
+Search/filter
+Data table
+Integration tests
+Test:
+Create User
+    ↓
+Send OTP
+    ↓
+Validate OTP
+    ↓
+Create User
+and:
+Search Commission
+    ↓
+Select Commission
+    ↓
+Edit
+    ↓
+OTP
+    ↓
+Update
+E2E
+At least 
+3 complete business journeys
+.
+Recommended:
+Journey 1
+Create User
+Journey 2
+Create/Edit Commission
+Journey 3
+Create/Edit Plan
+13. Part I — AI-Assisted Debugging Challenge
+During evaluation, intentionally introduce one or more problems such as:
+Incorrect API response handling
+Invalid form state
+Race condition
+Incorrect permission rendering
+OTP state bug
+API failure not displayed
+Mobile layout issue
+Candidate should use AI to diagnose and fix the problem.
+This directly evaluates the expected ability to use AI for debugging, failure analysis and iterative correction.
+14. Part J — AI Prompt Engineering
+The candidate must submit the prompts used during development.
+For example:
+You are a senior React/TypeScript architect.
+Analyze the supplied SCM Postman collection.
+Identify:
+1. API domains
+2. Business modules
+3. CRUD operations
+4. Master-data dependencies
+5. OTP-protected operations
+6. Shared API patterns
+7. Permission dependencies
+Do not generate implementation yet.
+First produce:
+- application architecture
+- feature boundaries
+- API service architecture
+- state-management strategy
+- reusable component architecture
+- error-handling strategy
+Then a second prompt:
+Using the architecture above, design the UX for the
+Commission Configuration module.
+Do not generate code.
+First define:
+- information architecture
+- navigation
+- screen hierarchy
+- user journeys
+- form structure
+- validation
+- loading states
+- empty states
+- error states
+- OTP workflow
+- responsive behavior
+Then:
+Implement the Commission Configuration module
+according to the approved architecture.
+Use reusable components.
+Do not duplicate API logic.
+Generate unit and integration tests alongside
+the implementation.
+After implementation:
+1. run tests
+2. analyze failures
+3. fix failures
+4. perform a security review
+5. perform an accessibility review
+6. report remaining risks
+This demonstrates the 
+Requirement → Architecture → Components → Interfaces → Implementation → Tests → Validation
+ methodology expected in the role.
+15. Expected Repository Structure
+One possible target:
+scm-ui/
+│
+├── 
+app/
+│
+├── 
+components/
+│   ├── 
+ui/
+│   ├── 
+forms/
+│   ├── 
+tables/
+│   └── 
+feedback/
+│
+├── 
+features/
+│   ├── 
+dashboard/
+│   ├── 
+users/
+│   ├── 
+dealers/
+│   ├── 
+commissions/
+│   ├── 
+plans/
+│   └── 
+numbers/
+│
+├── 
+api/
+│   ├── 
+client.ts
+│   ├── 
+user.api.ts
+│   ├── 
+dealer.api.ts
+│   ├── 
+commission.api.ts
+│   ├── 
+plan.api.ts
+│   └── 
+masterdata.api.ts
+│
+├── 
+hooks/
+│
+├── 
+stores/
+│
+├── 
+schemas/
+│
+├── 
+tests/
+│   ├── 
+unit/
+│   ├── 
+integration/
+│   └── 
+e2e/
+│
+├── 
+docs/
+│   ├── 
+architecture.md
+│   ├── 
+ai-prompts.md
+│   ├── 
+api-mapping.md
+│   └── 
+decisions.md
+│
+└── 
+README.md
+The exact structure is not mandatory; 
+good architectural reasoning is
+.
+16. Deliverables
+The candidate must submit:
+1. Working application
+Fully runnable locally.
+2. Source code
+Git repository.
+3. API mapping
+Document showing:
+UI Screen
+   ↓
+Feature
+   ↓
+API
+   ↓
+HTTP Method
+   ↓
+Request
+   ↓
+Response
+4. AI Prompt Log
+Document:
+Prompt
+↓
+AI Output
+↓
+What candidate accepted
+↓
+What candidate rejected
+↓
+Why
+↓
+Iteration
+5. Architecture Document
+Include:
+Component architecture
+API architecture
+State management
+Error handling
+Authentication/authorization
+OTP workflow
+Testing strategy
+6. Automated tests
+Unit + integration + E2E.
+7. README
+Must contain:
+Setup
+Environment variables
+Run instructions
+Test instructions
+Build instructions
+AI tools used
+Known limitations
+17. Evaluation Rubric
+I would strongly recommend 
+not giving traditional coding ability the highest weight
+.
+The purpose is to identify an 
+AI-native engineer
+.
+Category
+Weight
+AI-driven UI/UX design
+15%
+AI-assisted development methodology
+15%
+API integration
+15%
+UI/UX quality
+10%
+Architecture/component design
+10%
+Automated testing
+15%
+AI-assisted debugging
+5%
+Code review/security/performance
+5%
+Responsive/accessibility
+5%
+Documentation & AI prompts
+5%
+Total
+100%
+18. What We Are Really Testing
+Traditional UI Developer
+Requirement
+     ↓
+Manual coding
+     ↓
+Build UI
+     ↓
+Debug
+     ↓
+Test
+Target AI-Native UI Developer
+Business Requirement
+        ↓
+AI-assisted Analysis
+        ↓
+UX Design with AI
+        ↓
+Architecture
+        ↓
+Precise AI Specification
+        ↓
+AI-generated Implementation
+        ↓
+Human Review
+        ↓
+AI-generated Tests
+        ↓
+Automated Validation
+        ↓
+AI-assisted Debugging
+        ↓
+Security / Performance Review
+        ↓
+CI Validation
+        ↓
+Production-ready UI
