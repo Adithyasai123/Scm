@@ -99,7 +99,7 @@ export default function ReportsPage() {
                   approveOtpAction.initiate();
                 }}
                 type="button"
-                className="inline-flex items-center space-x-1 px-2.5 py-1 text-xs font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/40 dark:text-sky-300 dark:hover:bg-sky-900/50 rounded-lg transition-colors"
+                className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/50 dark:text-sky-300 dark:hover:bg-sky-900/50 rounded-lg transition-colors cursor-pointer border border-sky-200/60 dark:border-sky-800/50"
               >
                 <CheckCircle className="w-3.5 h-3.5" />
                 <span>Approve (OTP)</span>
@@ -110,7 +110,7 @@ export default function ReportsPage() {
                   queryClient.invalidateQueries({ queryKey: ['franchise-transactions'] });
                 }}
                 type="button"
-                className="inline-flex items-center space-x-1 px-2.5 py-1 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-lg transition-colors"
+                className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-300 rounded-lg transition-colors cursor-pointer border border-rose-200/60 dark:border-rose-900/40"
               >
                 <XCircle className="w-3.5 h-3.5" />
                 <span>Reject</span>
@@ -166,14 +166,14 @@ export default function ReportsPage() {
         </div>
 
         {/* Direct Wallet Adjustment Panel */}
-        <div className="bg-surface rounded-lg border border-slate-200/80 shadow-sm p-6 space-y-4">
-          <div className="flex items-center space-x-2.5 pb-3 border-b border-slate-100">
-            <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
+        <div className="bg-surface rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden space-y-0">
+          <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 px-6 py-4 border-b border-sky-100 dark:border-slate-800 flex items-center space-x-3">
+            <div className="p-2 bg-sky-500/15 border border-sky-500/30 text-sky-600 dark:text-sky-400 rounded-xl">
               <Wallet className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900">Wallet Adjustment</h3>
-              <p className="text-xs text-slate-500">Direct dealer stock credit / debit</p>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Wallet Adjustment</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Direct dealer stock credit / debit</p>
             </div>
           </div>
 
@@ -190,10 +190,10 @@ export default function ReportsPage() {
               setWalletSuccess(`Wallet credited! New Balance: ${formatCurrency(res?.newBalance || res?.balanceAfter || 50000)}`);
               setWalletForm({ msisdn: '', amount: 5000, reason: 'Monthly Channel Incentive Allocation' });
             }}
-            className="space-y-4 text-xs"
+            className="p-6 space-y-4 text-xs"
           >
             <div>
-              <label className="block font-semibold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                 Target Dealer MSISDN *
               </label>
               <input
@@ -203,32 +203,32 @@ export default function ReportsPage() {
                 value={walletForm.msisdn}
                 onChange={(e) => setWalletForm({ ...walletForm, msisdn: e.target.value })}
                 placeholder="10-digit mobile"
-                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600 font-mono"
+                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 uppercase tracking-wider mb-1">
-                Adjustment Amount (?) *
+              <label className="block font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                Adjustment Amount (₹) *
               </label>
               <input
                 type="number"
                 required
                 value={walletForm.amount}
                 onChange={(e) => setWalletForm({ ...walletForm, amount: Number(e.target.value) })}
-                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600 font-mono font-bold"
+                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono font-bold"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                 Adjustment Purpose / Audit Note
               </label>
               <textarea
                 rows={2}
                 value={walletForm.reason}
                 onChange={(e) => setWalletForm({ ...walletForm, reason: e.target.value })}
-                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
               />
             </div>
 
@@ -240,9 +240,10 @@ export default function ReportsPage() {
 
             <button
               type="submit"
-              className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-sm transition-all"
+              className="w-full inline-flex items-center justify-center space-x-2 px-4 py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
             >
-              Post Wallet Adjustment
+              <span>Post Wallet Adjustment</span>
+              <ArrowUpRight className="w-4 h-4" />
             </button>
           </form>
         </div>

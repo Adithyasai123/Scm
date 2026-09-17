@@ -101,11 +101,11 @@ export function DataTable<T>({
   const currentItems = data.slice(startIndex, startIndex + pageSize);
 
   return (
-    <div className="bg-surface rounded-[10px] border border-border shadow-xs overflow-hidden flex flex-col">
+    <div className="bg-surface rounded-[10px] border border-border border-t-2 border-t-sky-500 shadow-xs overflow-hidden flex flex-col">
       <div className="overflow-x-auto max-h-[600px] relative">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-border bg-background sticky top-0 z-10">
+            <tr className="border-b border-sky-100 dark:border-slate-800 bg-gradient-to-r from-sky-50/80 via-slate-50 to-sky-50/40 dark:from-slate-850 dark:via-sky-950/40 dark:to-slate-850 sticky top-0 z-10">
               {columns.map((col) => (
                 <th
                   key={col.key}

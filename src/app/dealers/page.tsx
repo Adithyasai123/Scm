@@ -226,7 +226,7 @@ export default function DealersPage() {
               });
             }}
             type="button"
-            className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-1.5 text-slate-500 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-950/40 dark:hover:text-sky-400 rounded-lg transition-colors"
             title="Edit Dealer Details"
           >
             <Edit2 className="w-3.5 h-3.5" />
@@ -239,7 +239,7 @@ export default function DealersPage() {
               mpinOtpAction.initiate();
             }}
             type="button"
-            className="inline-flex items-center space-x-1 px-2.5 py-1 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+            className="inline-flex items-center space-x-1 px-2.5 py-1 text-xs font-semibold text-sky-700 bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/40 dark:text-sky-300 dark:hover:bg-sky-900/50 rounded-lg transition-colors"
             title="Reset Dealer MPIN with OTP authorization"
           >
             <KeyRound className="w-3.5 h-3.5" />
@@ -302,28 +302,34 @@ export default function DealersPage() {
           </p>
         </div>
         <div className="flex items-center space-x-3">
-          <div className="flex p-1 bg-slate-200/70 rounded-xl">
+          <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setActiveTab('list')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                activeTab === 'list' ? 'bg-surface text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+              className={`inline-flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                activeTab === 'list'
+                  ? 'bg-sky-600 text-white shadow-sm shadow-sky-600/25'
+                  : 'bg-surface text-slate-600 hover:bg-slate-50 border border-slate-200 dark:border-slate-700'
               }`}
             >
-              Dealer List
+              <Store className="w-3.5 h-3.5" />
+              <span>Dealer Directory</span>
             </button>
             <button
               onClick={() => setActiveTab('hierarchy')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                activeTab === 'hierarchy' ? 'bg-surface text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+              className={`inline-flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                activeTab === 'hierarchy'
+                  ? 'bg-sky-600 text-white shadow-sm shadow-sky-600/25'
+                  : 'bg-surface text-slate-600 hover:bg-slate-50 border border-slate-200 dark:border-slate-700'
               }`}
             >
-              Hierarchy Tree
+              <Network className="w-3.5 h-3.5" />
+              <span>Hierarchy Network</span>
             </button>
           </div>
           <button
             onClick={() => setIsRegisterOpen(true)}
             type="button"
-            className="inline-flex items-center space-x-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all"
+            className="inline-flex items-center space-x-2 px-4 py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
           >
             <PlusCircle className="w-4 h-4" />
             <span>Register Dealer</span>
@@ -342,36 +348,35 @@ export default function DealersPage() {
             isRefreshing={isFetching}
           />
 
-          <div className="bg-surface rounded-lg border border-slate-200/80 shadow-xs overflow-hidden">
-            <DataTable
-              columns={columns}
-              data={filteredDealers}
-              isLoading={isLoading}
-              isError={isError}
-              onRetry={() => refetch()}
-              keyExtractor={(d: any) => d.msisdn || Math.random()}
-            />
-          </div>
+          <DataTable
+            columns={columns}
+            data={filteredDealers}
+            isLoading={isLoading}
+            isError={isError}
+            onRetry={() => refetch()}
+            keyExtractor={(d: any) => d.msisdn || Math.random()}
+          />
         </div>
       ) : (
         /* Dynamic Dealer Hierarchy Network Tree View */
-        <div className="bg-surface rounded-lg border border-slate-200/80 shadow-xs p-8 space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <div className="flex items-center space-x-2.5">
-              <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
+        <div className="bg-surface rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          {/* Card Header with Distinct Sky Tint */}
+          <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 px-6 py-4 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-sky-500/15 border border-sky-500/30 text-sky-600 dark:text-sky-400 rounded-xl">
                 <Network className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900">Channel Hierarchy Network</h3>
-                <p className="text-xs text-slate-500">Live distribution mapping: Master Franchise &rarr; Sub-Franchise &rarr; Retailers</p>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Channel Hierarchy Network</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Live distribution mapping: Master Franchise &rarr; Sub-Franchise &rarr; Retailers</p>
               </div>
             </div>
-            <span className="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-xl border border-blue-100">
+            <span className="px-3 py-1 bg-sky-500/10 text-sky-700 dark:text-sky-300 text-xs font-bold rounded-xl border border-sky-200 dark:border-sky-800">
               {dealerList.length} Total Nodes Connected
             </span>
           </div>
 
-          <div className="space-y-6">
+          <div className="p-6 space-y-6">
             {masterFranchises.map((mf: any) => {
               // Find child sub-franchises
               const childrenSub = subFranchises.filter((sf: any) => sf.franchiseMsisdn === mf.msisdn);
@@ -379,11 +384,11 @@ export default function DealersPage() {
               const directRetailers = retailers.filter((r: any) => r.franchiseMsisdn === mf.msisdn);
 
               return (
-                <div key={mf.msisdn} className="p-5 bg-slate-50/70 rounded-lg border border-blue-200/80 space-y-4">
+                <div key={mf.msisdn} className="p-5 bg-slate-50/70 dark:bg-slate-900/50 rounded-xl border border-sky-200/80 dark:border-sky-800/60 space-y-4">
                   {/* Master Franchise Node */}
-                  <div className="p-4 bg-surface rounded-xl border border-blue-200 shadow-sm flex items-center justify-between">
+                  <div className="p-4 bg-surface rounded-xl border border-sky-200 dark:border-sky-800 shadow-sm flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <div className="w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100" />
+                      <div className="w-3.5 h-3.5 rounded-full bg-sky-600 ring-4 ring-sky-100 dark:ring-sky-950" />
                       <div>
                         <div className="text-xs font-bold text-slate-900">{mf.name} [Master Franchise]</div>
                         <div className="text-[11px] font-mono text-slate-500">MSISDN: {mf.msisdn} · Category: {mf.category}</div>
@@ -459,13 +464,13 @@ export default function DealersPage() {
       {/* Edit Dealer Modal */}
       {editingDealer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+          <div className="w-full max-w-md bg-surface rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div className="p-6 bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-slate-900">Edit Dealer Information</h3>
-                <p className="text-xs text-slate-500">MSISDN: {editingDealer.msisdn}</p>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Edit Dealer Information</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">MSISDN: {editingDealer.msisdn}</p>
               </div>
-              <button onClick={() => setEditingDealer(null)} className="p-1.5 text-slate-400">
+              <button onClick={() => setEditingDealer(null)} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -484,7 +489,7 @@ export default function DealersPage() {
                   required
                   value={editFormData.name}
                   onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                  className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -494,7 +499,7 @@ export default function DealersPage() {
                   <select
                     value={editFormData.category}
                     onChange={(e) => setEditFormData({ ...editFormData, category: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                    className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="Category A">Category A</option>
                     <option value="Category B">Category B</option>
@@ -506,7 +511,7 @@ export default function DealersPage() {
                   <select
                     value={editFormData.dealerType}
                     onChange={(e) => setEditFormData({ ...editFormData, dealerType: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                    className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="Retailer">Retailer</option>
                     <option value="SubFranchise">Sub-Franchise</option>
@@ -522,7 +527,7 @@ export default function DealersPage() {
                   type="tel"
                   value={editFormData.franchiseMsisdn}
                   onChange={(e) => setEditFormData({ ...editFormData, franchiseMsisdn: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono"
+                  className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
                   placeholder="9811012345"
                 />
               </div>
@@ -531,14 +536,14 @@ export default function DealersPage() {
                 <button
                   type="button"
                   onClick={() => setEditingDealer(null)}
-                  className="px-4 py-2 border rounded-xl text-slate-600 font-bold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 text-xs font-bold transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={editOtpAction.state === 'executing'}
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-sm"
+                  className="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
                 >
                   {editOtpAction.state === 'executing' ? 'Updating...' : 'Save Updates'}
                 </button>
@@ -551,13 +556,13 @@ export default function DealersPage() {
       {/* Reassign Hierarchy Modal */}
       {hierarchyReassignTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+          <div className="w-full max-w-md bg-surface rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div className="p-6 bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-slate-900">Reassign Hierarchy Parent</h3>
-                <p className="text-xs text-slate-500">Re-link {hierarchyReassignTarget.name} ({hierarchyReassignTarget.msisdn})</p>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Reassign Hierarchy Parent</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Re-link {hierarchyReassignTarget.name} ({hierarchyReassignTarget.msisdn})</p>
               </div>
-              <button onClick={() => setHierarchyReassignTarget(null)} className="p-1.5 text-slate-400">
+              <button onClick={() => setHierarchyReassignTarget(null)} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -575,7 +580,7 @@ export default function DealersPage() {
                   required
                   value={newParentMsisdn}
                   onChange={(e) => setNewParentMsisdn(e.target.value)}
-                  className="w-full p-2.5 bg-slate-50 border rounded-xl font-medium"
+                  className="w-full p-2.5 bg-slate-50 border rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
                 >
                   <option value="">-- Choose Parent Franchise --</option>
                   {masterFranchises
@@ -592,14 +597,14 @@ export default function DealersPage() {
                 <button
                   type="button"
                   onClick={() => setHierarchyReassignTarget(null)}
-                  className="px-4 py-2 border rounded-xl text-slate-600 font-bold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 text-xs font-bold transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={hierarchyOtpAction.state === 'executing' || !newParentMsisdn}
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-sm"
+                  className="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
                 >
                   {hierarchyOtpAction.state === 'executing' ? 'Updating...' : 'Commit Hierarchy'}
                 </button>
@@ -685,13 +690,13 @@ export default function DealersPage() {
       {/* Onboard Dealer Modal with PAN / Aadhaar checks */}
       {isRegisterOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="w-full max-w-xl bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8">
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+          <div className="w-full max-w-xl bg-surface rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-8">
+            <div className="p-6 bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
               <div>
-                <h2 className="text-base font-bold text-slate-900">Onboard New Channel Dealer</h2>
-                <p className="text-xs text-slate-500">Pre-validation duplicate checks for PAN & Aadhaar</p>
+                <h2 className="text-base font-bold text-slate-900 dark:text-white">Onboard New Channel Dealer</h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Pre-validation duplicate checks for PAN & Aadhaar</p>
               </div>
-              <button onClick={() => setIsRegisterOpen(false)} className="p-1.5 text-slate-400 hover:text-slate-600">
+              <button onClick={() => setIsRegisterOpen(false)} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -706,9 +711,6 @@ export default function DealersPage() {
                     ssaId: selectedSSA || 1,
                     status: 'ACTIVE',
                   };
-                  // Use dynamic import or assume createDealerSchema is imported. Let's add the import.
-                  // Actually, I'll just put the import at the top later, or use inline validation if I can't import easily.
-                  // Since I can't easily add import without replacing line 1-20, I'll add the import to the top of the file in a separate replace_file_content call.
                   await import('@/schemas/dealer.schema').then(m => m.createDealerSchema.parse(payload));
                   
                   await dealerApi.createDealer({
@@ -746,7 +748,7 @@ export default function DealersPage() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Metro Cellular Agency"
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -759,7 +761,7 @@ export default function DealersPage() {
                     value={formData.msisdn}
                     onChange={(e) => setFormData({ ...formData, msisdn: e.target.value })}
                     placeholder="9876543210"
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
                 <div>
@@ -767,7 +769,7 @@ export default function DealersPage() {
                   <select
                     value={formData.dealerType}
                     onChange={(e) => setFormData({ ...formData, dealerType: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="Retailer">Retailer</option>
                     <option value="SubFranchise">Sub Franchise</option>
@@ -805,12 +807,12 @@ export default function DealersPage() {
                       setFormData({ ...formData, panId: e.target.value.toUpperCase() });
                       setPanStatus('idle');
                     }}
-                    className="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs uppercase focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs uppercase focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                   <button
                     type="button"
                     onClick={handleCheckPan}
-                    className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl"
+                    className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl cursor-pointer"
                   >
                     Verify PAN
                   </button>
@@ -843,12 +845,12 @@ export default function DealersPage() {
                       setFormData({ ...formData, aadharId: e.target.value });
                       setAadharStatus('idle');
                     }}
-                    className="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                   <button
                     type="button"
                     onClick={handleCheckAadhar}
-                    className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl"
+                    className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl cursor-pointer"
                   >
                     Verify Aadhaar
                   </button>
@@ -876,22 +878,22 @@ export default function DealersPage() {
                   placeholder="9811012345 (Optional)"
                   value={formData.franchiseMsisdn}
                   onChange={(e) => setFormData({ ...formData, franchiseMsisdn: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-end space-x-3">
+              <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end space-x-3">
                 <button
                   type="button"
                   onClick={() => setIsRegisterOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-50"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl hover:bg-slate-50 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={panStatus === 'exists' || aadharStatus === 'exists'}
-                  className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white text-xs font-bold rounded-xl shadow-sm transition-all"
+                  className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 disabled:bg-slate-300 text-white text-xs font-bold rounded-xl shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
                 >
                   Register Dealer
                 </button>

@@ -750,7 +750,10 @@ export default function DashboardPage() {
         </div>
 
         <div className="flex items-center gap-2 shrink-0 sm:ml-auto">
-          <Link href="/dealers" className="btn btn-primary text-xs font-semibold px-3 py-1.5 shadow-sm">
+          <Link
+            href="/dealers"
+            className="inline-flex items-center space-x-2 px-4 py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
+          >
             <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
             <span>Onboard Dealer</span>
           </Link>

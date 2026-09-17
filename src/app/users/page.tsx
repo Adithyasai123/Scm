@@ -275,7 +275,7 @@ export default function UsersPage() {
       key: 'roleName',
       header: 'Role / Designation',
       render: (u) => (
-        <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100">
+        <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border border-sky-200/80 dark:border-sky-800">
           {u.roleName || `Role ${u.roleId}`}
         </span>
       ),
@@ -294,7 +294,7 @@ export default function UsersPage() {
           <button
             onClick={() => setSelectedUserForView(u)}
             type="button"
-            className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-1.5 text-slate-500 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-950/40 dark:hover:text-sky-400 rounded-lg transition-colors cursor-pointer"
             title="View User Details & Permissions"
           >
             <Eye className="w-4 h-4" />
@@ -367,7 +367,7 @@ export default function UsersPage() {
         <button
           onClick={() => setIsCreateModalOpen(true)}
           type="button"
-          className="btn btn-primary text-xs shadow-xs"
+          className="inline-flex items-center space-x-2 px-4 py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
         >
           <UserPlus className="w-4 h-4" />
           <span>Create New User</span>
@@ -375,59 +375,12 @@ export default function UsersPage() {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="bg-surface rounded-lg border border-slate-200/80 p-4 space-y-3 shadow-sm">
-        <SearchToolbar
-          search={search}
-          onSearchChange={setSearch}
-          placeholder="Search by Username, HRMS ID, Name, or Mobile..."
-          onRefresh={() => refetch()}
-          isRefreshing={isFetching}
-        />
-
-        {/* Multi-field Filter Controls */}
-        <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-100 text-xs">
-          <div className="flex items-center space-x-1 text-slate-500 font-semibold">
-            <Filter className="w-3.5 h-3.5" />
-            <span>Filters:</span>
+      <div className="bg-surface rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+        <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 px-5 py-3 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Filter className="w-4 h-4 text-sky-600 dark:text-sky-400" />
+            <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">User Directory Filters & Search</h3>
           </div>
-
-          {/* Status Filter */}
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-blue-600"
-          >
-            <option value="ALL">All Statuses</option>
-            <option value="1">Active Only</option>
-            <option value="0">Inactive Only</option>
-          </select>
-
-          {/* Role Filter */}
-          <select
-            value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value)}
-            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-blue-600"
-          >
-            <option value="ALL">All Roles</option>
-            <option value="1">Super Admin</option>
-            <option value="2">Circle Manager / Ops</option>
-            <option value="3">Auditor</option>
-          </select>
-
-          {/* Zone Filter */}
-          <select
-            value={zoneFilter}
-            onChange={(e) => setZoneFilter(e.target.value)}
-            className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-blue-600"
-          >
-            <option value="ALL">All Zones</option>
-            {zones.data?.map((z) => (
-              <option key={z.id} value={String(z.id)}>
-                {z.name}
-              </option>
-            ))}
-          </select>
-
           {(search || statusFilter !== 'ALL' || roleFilter !== 'ALL' || zoneFilter !== 'ALL') && (
             <button
               onClick={() => {
@@ -436,11 +389,65 @@ export default function UsersPage() {
                 setRoleFilter('ALL');
                 setZoneFilter('ALL');
               }}
-              className="text-blue-600 hover:text-blue-700 font-bold ml-auto"
+              className="text-xs text-sky-600 hover:text-sky-700 dark:text-sky-400 font-bold cursor-pointer"
             >
               Reset Filters
             </button>
           )}
+        </div>
+        <div className="p-4 space-y-3">
+          <SearchToolbar
+            search={search}
+            onSearchChange={setSearch}
+            placeholder="Search by Username, HRMS ID, Name, or Mobile..."
+            onRefresh={() => refetch()}
+            isRefreshing={isFetching}
+          />
+
+          {/* Multi-field Filter Controls */}
+          <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+            <div className="flex items-center space-x-1 text-slate-500 font-semibold">
+              <Filter className="w-3.5 h-3.5" />
+              <span>Filters:</span>
+            </div>
+
+            {/* Status Filter */}
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as any)}
+              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+            >
+              <option value="ALL">All Statuses</option>
+              <option value="1">Active Only</option>
+              <option value="0">Inactive Only</option>
+            </select>
+
+            {/* Role Filter */}
+            <select
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+            >
+              <option value="ALL">All Roles</option>
+              <option value="1">Super Admin</option>
+              <option value="2">Circle Manager / Ops</option>
+              <option value="3">Auditor</option>
+            </select>
+
+            {/* Zone Filter */}
+            <select
+              value={zoneFilter}
+              onChange={(e) => setZoneFilter(e.target.value)}
+              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+            >
+              <option value="ALL">All Zones</option>
+              {zones.data?.map((z) => (
+                <option key={z.id} value={String(z.id)}>
+                  {z.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -458,33 +465,33 @@ export default function UsersPage() {
       {selectedUserForView && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
           <div className="w-full max-w-2xl bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+            <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 p-6 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-blue-600 text-white font-medium flex items-center justify-center text-[13px]">
+                <div className="w-10 h-10 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center text-[13px] shadow-sm shadow-sky-600/30">
                   {selectedUserForView.firstName ? selectedUserForView.firstName[0] : 'U'}
                 </div>
                 <div>
-                  <h2 className="text-base font-bold text-slate-900">
+                  <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
                     {selectedUserForView.firstName} {selectedUserForView.lastName}
                   </h2>
-                  <p className="text-xs text-slate-500 font-mono">@{selectedUserForView.username} · HRMS: {selectedUserForView.hrmsId}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">@{selectedUserForView.username} · HRMS: {selectedUserForView.hrmsId}</p>
                 </div>
               </div>
-              <button onClick={() => setSelectedUserForView(null)} className="p-1.5 text-slate-400 hover:text-slate-600">
+              <button onClick={() => setSelectedUserForView(null)} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="p-6 space-y-6 max-h-[75vh] overflow-y-auto text-xs">
               {/* Profile Details Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-slate-50 rounded-lg border border-slate-100">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-200/80 dark:border-slate-800">
                 <div>
                   <span className="text-slate-400 font-medium">Role</span>
-                  <div className="font-bold text-slate-900 mt-0.5">{selectedUserForView.roleName || 'Operator'}</div>
+                  <div className="font-bold text-slate-900 dark:text-slate-100 mt-0.5">{selectedUserForView.roleName || 'Operator'}</div>
                 </div>
                 <div>
                   <span className="text-slate-400 font-medium">Mobile Number</span>
-                  <div className="font-mono font-bold text-slate-900 mt-0.5">{selectedUserForView.mobileNumber || 'N/A'}</div>
+                  <div className="font-mono font-bold text-slate-900 dark:text-slate-100 mt-0.5">{selectedUserForView.mobileNumber || 'N/A'}</div>
                 </div>
                 <div>
                   <span className="text-slate-400 font-medium">Account Status</span>
@@ -492,26 +499,26 @@ export default function UsersPage() {
                 </div>
                 <div>
                   <span className="text-slate-400 font-medium">Assigned Zone</span>
-                  <div className="font-semibold text-slate-800 mt-0.5">Zone {selectedUserForView.zoneId || 1}</div>
+                  <div className="font-semibold text-slate-800 dark:text-slate-200 mt-0.5">Zone {selectedUserForView.zoneId || 1}</div>
                 </div>
                 <div>
                   <span className="text-slate-400 font-medium">Circle ID</span>
-                  <div className="font-semibold text-slate-800 mt-0.5">Circle {selectedUserForView.circleId || 1}</div>
+                  <div className="font-semibold text-slate-800 dark:text-slate-200 mt-0.5">Circle {selectedUserForView.circleId || 1}</div>
                 </div>
                 <div>
                   <span className="text-slate-400 font-medium">Secondary Area (SSA)</span>
-                  <div className="font-semibold text-slate-800 mt-0.5">SSA {selectedUserForView.ssaId || 1}</div>
+                  <div className="font-semibold text-slate-800 dark:text-slate-200 mt-0.5">SSA {selectedUserForView.ssaId || 1}</div>
                 </div>
                 <div className="col-span-2 sm:col-span-3">
                   <span className="text-slate-400 font-medium">Operating Address</span>
-                  <div className="text-slate-700 font-medium mt-0.5">{selectedUserForView.address || 'Telecom Operations Center'}</div>
+                  <div className="text-slate-700 dark:text-slate-300 font-medium mt-0.5">{selectedUserForView.address || 'Telecom Operations Center'}</div>
                 </div>
               </div>
 
               {/* 18 Permissions Matrix */}
               <div>
-                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center space-x-2">
-                  <Shield className="w-4 h-4 text-purple-600" />
+                <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-3 flex items-center space-x-2">
+                  <Shield className="w-4 h-4 text-sky-600 dark:text-sky-400" />
                   <span>Authorized Permissions Matrix (18 Flags)</span>
                 </h4>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -521,11 +528,11 @@ export default function UsersPage() {
                       <div
                         key={key}
                         className={`p-2 rounded-xl border flex items-center justify-between ${
-                          val ? 'bg-sky-50/70 border-sky-200 text-sky-800 dark:bg-sky-950/40 dark:border-sky-800 dark:text-sky-300' : 'bg-slate-50 border-slate-200 text-slate-400'
+                          val ? 'bg-sky-50/70 border-sky-200 text-sky-800 dark:bg-sky-950/40 dark:border-sky-800 dark:text-sky-300' : 'bg-slate-50 border-slate-200 text-slate-400 dark:bg-slate-800/40 dark:border-slate-800 dark:text-slate-500'
                         }`}
                       >
                         <span className="truncate pr-1">{key}</span>
-                        {val ? <Check className="w-3.5 h-3.5 text-sky-600 shrink-0" /> : <X className="w-3.5 h-3.5 text-slate-300 shrink-0" />}
+                        {val ? <Check className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" /> : <X className="w-3.5 h-3.5 text-slate-300 shrink-0" />}
                       </div>
                     );
                   })}
@@ -533,10 +540,10 @@ export default function UsersPage() {
               </div>
             </div>
 
-            <div className="p-4 border-t border-slate-100 flex justify-end bg-slate-50/50">
+            <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex justify-end bg-slate-50/50 dark:bg-slate-850">
               <button
                 onClick={() => setSelectedUserForView(null)}
-                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl"
+                className="px-4 py-2 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl cursor-pointer transition-colors"
               >
                 Close
               </button>
@@ -549,12 +556,12 @@ export default function UsersPage() {
       {selectedUserForEdit && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
           <div className="w-full max-w-md bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+            <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 p-6 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-slate-900">Edit User Profile</h3>
-                <p className="text-xs text-slate-500">Update administrative credentials for @{selectedUserForEdit.username}</p>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Edit User Profile</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Update administrative credentials for @{selectedUserForEdit.username}</p>
               </div>
-              <button onClick={() => setSelectedUserForEdit(null)} className="p-1.5 text-slate-400 hover:text-slate-600">
+              <button onClick={() => setSelectedUserForEdit(null)} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -568,54 +575,54 @@ export default function UsersPage() {
             >
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold mb-1">First Name *</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">First Name *</label>
                   <input
                     type="text"
                     required
                     value={editFormData.firstName}
                     onChange={(e) => setEditFormData({ ...editFormData, firstName: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold mb-1">Last Name</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Last Name</label>
                   <input
                     type="text"
                     value={editFormData.lastName}
                     onChange={(e) => setEditFormData({ ...editFormData, lastName: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">Mobile Number *</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Mobile Number *</label>
                 <input
                   type="tel"
                   required
                   value={editFormData.mobileNumber}
                   onChange={(e) => setEditFormData({ ...editFormData, mobileNumber: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">Role / Designation</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Role / Designation</label>
                 <input
                   type="text"
                   value={editFormData.roleName}
                   onChange={(e) => setEditFormData({ ...editFormData, roleName: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">Address</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Address</label>
                 <input
                   type="text"
                   value={editFormData.address}
                   onChange={(e) => setEditFormData({ ...editFormData, address: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -623,14 +630,14 @@ export default function UsersPage() {
                 <button
                   type="button"
                   onClick={() => setSelectedUserForEdit(null)}
-                  className="px-4 py-2 border rounded-xl text-slate-600 font-bold"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={editOtpAction.state === 'executing'}
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-sm"
+                  className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
                 >
                   {editOtpAction.state === 'executing' ? 'Saving...' : 'Save Changes'}
                 </button>
@@ -644,12 +651,12 @@ export default function UsersPage() {
       {selectedUserForPerms && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
           <div className="w-full max-w-xl bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+            <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 p-6 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-slate-900">Manage 18-Point Permissions Matrix</h3>
-                <p className="text-xs text-slate-500">Fine-grained access control for @{selectedUserForPerms.username}</p>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Manage 18-Point Permissions Matrix</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Fine-grained access control for @{selectedUserForPerms.username}</p>
               </div>
-              <button onClick={() => setSelectedUserForPerms(null)} className="p-1.5 text-slate-400">
+              <button onClick={() => setSelectedUserForPerms(null)} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -661,9 +668,9 @@ export default function UsersPage() {
                   return (
                     <label
                       key={key}
-                      className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between cursor-pointer hover:bg-slate-100"
+                      className="p-3 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-200/80 dark:border-slate-800 flex items-center justify-between cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                     >
-                      <span className="font-semibold text-slate-700 truncate pr-2">{key}</span>
+                      <span className="font-semibold text-slate-700 dark:text-slate-300 truncate pr-2">{key}</span>
                       <input
                         type="checkbox"
                         checked={val}
@@ -677,7 +684,7 @@ export default function UsersPage() {
                             permissions: updated as any,
                           });
                         }}
-                        className="w-4 h-4 text-blue-600 rounded"
+                        className="w-4 h-4 text-sky-600 focus:ring-sky-500 rounded"
                       />
                     </label>
                   );
@@ -685,17 +692,17 @@ export default function UsersPage() {
               </div>
             </div>
 
-            <div className="p-4 border-t border-slate-100 flex justify-end space-x-2 bg-slate-50/50">
+            <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex justify-end space-x-2 bg-slate-50/50 dark:bg-slate-850">
               <button
                 onClick={() => setSelectedUserForPerms(null)}
-                className="px-4 py-2 border rounded-xl text-slate-600 text-xs font-bold"
+                className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-colors cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={() => permMutation.mutate(selectedUserForPerms.permissions as any)}
                 disabled={permMutation.isPending}
-                className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-sm"
+                className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
               >
                 {permMutation.isPending ? 'Updating...' : 'Save Permissions'}
               </button>
@@ -753,12 +760,12 @@ export default function UsersPage() {
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 overflow-y-auto">
           <div className="w-full max-w-2xl bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8">
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+            <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 p-6 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
               <div>
-                <h2 className="text-base font-bold text-slate-900">Onboard New Administrative User</h2>
-                <p className="text-xs text-slate-500">6-step OTP-guarded user registration with geographic assignment</p>
+                <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Onboard New Administrative User</h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">6-step OTP-guarded user registration with geographic assignment</p>
               </div>
-              <button onClick={() => setIsCreateModalOpen(false)} className="p-1.5 text-slate-400 hover:text-slate-600">
+              <button onClick={() => setIsCreateModalOpen(false)} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -786,85 +793,85 @@ export default function UsersPage() {
                   }
                 }
               }}
-              className="p-6 space-y-4 max-h-[75vh] overflow-y-auto"
+              className="p-6 space-y-4 max-h-[75vh] overflow-y-auto text-xs"
             >
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">HRMS ID *</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">HRMS ID *</label>
                   <input
                     type="text"
                     required
                     placeholder="HRMS999"
                     value={formData.hrmsId}
                     onChange={(e) => setFormData({ ...formData, hrmsId: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Username *</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Username *</label>
                   <input
                     type="text"
                     required
                     placeholder="user_ops"
                     value={formData.username}
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">First Name *</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">First Name *</label>
                   <input
                     type="text"
                     required
                     placeholder="First Name"
                     value={formData.firstName}
                     onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Last Name</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Last Name</label>
                   <input
                     type="text"
                     placeholder="Last Name"
                     value={formData.lastName}
                     onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Mobile Number (For OTP) *</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Mobile Number (For OTP) *</label>
                   <input
                     type="tel"
                     required
                     placeholder="9876543210"
                     value={formData.mobileNumber}
                     onChange={(e) => setFormData({ ...formData, mobileNumber: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Password *</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Password *</label>
                   <input
                     type="password"
                     required
                     placeholder="••••••••"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>
 
               {/* Geographic Cascade */}
-              <div className="p-4 bg-slate-50 rounded-lg border border-slate-200/80 space-y-3">
-                <span className="block text-xs font-bold text-slate-900 uppercase tracking-wider">
+              <div className="p-4 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-200/80 dark:border-slate-800 space-y-3">
+                <span className="block text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
                   Geographical Hierarchy Assignment
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -890,17 +897,17 @@ export default function UsersPage() {
 
               {/* 18 Permissions Toggles */}
               <div className="space-y-2">
-                <span className="block text-xs font-bold text-slate-900 uppercase tracking-wider">
+                <span className="block text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
                   Initial Permission Privileges
                 </span>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-40 overflow-y-auto p-2 bg-slate-50 rounded-xl border border-slate-200">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-40 overflow-y-auto p-2 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-200 dark:border-slate-800">
                   {Object.keys(permissions).map((permKey) => (
-                    <label key={permKey} className="flex items-center space-x-2 text-[11px] text-slate-700 cursor-pointer">
+                    <label key={permKey} className="flex items-center space-x-2 text-[11px] text-slate-700 dark:text-slate-300 cursor-pointer hover:text-sky-600 transition-colors">
                       <input
                         type="checkbox"
                         checked={permissions[permKey]}
                         onChange={(e) => setPermissions({ ...permissions, [permKey]: e.target.checked })}
-                        className="w-3.5 h-3.5 text-blue-600 rounded"
+                        className="w-3.5 h-3.5 text-sky-600 focus:ring-sky-500 rounded"
                       />
                       <span className="truncate">{permKey}</span>
                     </label>
@@ -908,17 +915,17 @@ export default function UsersPage() {
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-end space-x-3">
+              <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end space-x-3">
                 <button
                   type="button"
                   onClick={() => setIsCreateModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-50"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all"
+                  className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
                 >
                   Verify via OTP & Onboard
                 </button>
