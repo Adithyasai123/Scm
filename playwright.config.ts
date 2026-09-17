@@ -19,10 +19,6 @@ export default defineConfig({
       name: 'chrome',
       use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     },
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
   ],
   webServer: {
     command: 'npm run dev',

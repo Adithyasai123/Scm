@@ -302,7 +302,6 @@ export const OTPVerificationModal: React.FC<OTPVerificationModalProps> = ({
                     Resend OTP
                   </button>
                 )}
-                <span className="text-[10px] text-muted-fg/70 font-mono">(Mock: Any 4 digits)</span>
               </div>
             </div>
           )}

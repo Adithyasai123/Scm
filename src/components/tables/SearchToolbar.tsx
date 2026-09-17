@@ -13,7 +13,7 @@ interface SearchToolbarProps {
 export const SearchToolbar: React.FC<SearchToolbarProps> = ({
   search,
   onSearchChange,
-  placeholder = 'Search records...',
+  placeholder = 'Search...',
   onRefresh,
   isRefreshing = false,
   extraActions,
@@ -30,13 +30,13 @@ export const SearchToolbar: React.FC<SearchToolbarProps> = ({
           className="w-full pl-9 pr-3.5 py-1.5 text-xs bg-background border border-border rounded-md text-foreground placeholder-[#889397] focus:outline-none focus:border-accent focus:bg-surface transition-colors"
         />
       </div>
-      <div className="flex items-center space-x-2 w-full sm:w-auto justify-end">
+      <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-start sm:justify-end">
         {onRefresh && (
           <button
             onClick={onRefresh}
             type="button"
             disabled={isRefreshing}
-            className="p-1.5 text-muted-fg hover:text-foreground hover:bg-surface-alt rounded-md transition-colors border border-border"
+            className="p-1.5 text-muted-fg hover:text-foreground hover:bg-surface-alt rounded-md transition-colors border border-border shrink-0"
             title="Refresh table data"
             aria-label="Refresh table data"
           >

@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${atlasSans.variable} ${atlasSerif.variable} ${atlasMono.variable} dark h-full antialiased`}
+      className={`${atlasSans.variable} ${atlasSerif.variable} ${atlasMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
         <Providers>

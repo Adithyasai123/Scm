@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Inbox, Plus, ArrowRight } from 'lucide-react';
 import { LoadingState } from '@/components/feedback/LoadingState';
 import { ApiError } from '@/components/feedback/ApiError';
@@ -29,11 +29,23 @@ export function DataTable<T>({
   isError = false,
   errorMessage,
   onRetry,
-  pageSize = 10,
+  pageSize = 5,
   emptyMessage = 'No records found matching criteria.',
   keyExtractor,
 }: DataTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil((data?.length || 0) / pageSize);
+
+  // Reset to first page whenever dataset changes (e.g. search / filtering)
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [data?.length]);
+
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
 
   if (isLoading) {
     return <LoadingState message="Loading records from telecom registry..." />;
@@ -45,7 +57,10 @@ export function DataTable<T>({
 
   if (!data || data.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 px-6 bg-surface rounded-[8px] border border-border text-center shadow-xs">
+      <div
+        style={{ minHeight: '402px' }}
+        className="flex flex-col items-center justify-center py-16 px-6 bg-surface rounded-[8px] border border-border text-center shadow-xs"
+      >
         {/* Centered outlined icon with circular + badge in corner */}
         <div className="relative mb-4">
           <div className="w-14 h-14 rounded-full bg-surface-alt border border-border flex items-center justify-center text-muted-fg">
@@ -96,20 +111,28 @@ export function DataTable<T>({
     );
   }
 
-  const totalPages = Math.ceil(data.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const currentItems = data.slice(startIndex, startIndex + pageSize);
 
   return (
-    <div className="bg-surface rounded-[10px] border border-border border-t-2 border-t-sky-500 shadow-xs overflow-hidden flex flex-col">
-      <div className="overflow-x-auto max-h-[600px] relative">
+    <div
+      style={{ minHeight: '402px' }}
+      className="bg-surface rounded-[10px] border border-border border-t-2 border-t-sky-500 shadow-xs overflow-hidden flex flex-col justify-between"
+    >
+      <div
+        style={{ minHeight: '354px' }}
+        className="overflow-x-auto relative flex-1"
+      >
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-sky-100 dark:border-slate-800 bg-gradient-to-r from-sky-50/80 via-slate-50 to-sky-50/40 dark:from-slate-850 dark:via-sky-950/40 dark:to-slate-850 sticky top-0 z-10">
+            <tr
+              style={{ height: '44px' }}
+              className="bg-sky-500 dark:bg-sky-600 text-white sticky top-0 z-10 border-b border-sky-600/30"
+            >
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className={`px-4 py-3 text-[11px] font-bold text-muted-fg uppercase tracking-wider select-none ${
+                  className={`px-4 py-3 text-[11px] font-bold text-white uppercase tracking-wider select-none ${
                     col.className || ''
                   }`}
                 >
@@ -118,18 +141,39 @@ export function DataTable<T>({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#E8EDEB] text-[13px] text-foreground">
-            {currentItems.map((item) => (
+          <tbody className="divide-y divide-border text-[13px] text-foreground">
+            {currentItems.map((item, index) => (
               <tr
-                key={keyExtractor(item)}
+                key={`${keyExtractor(item)}-${startIndex + index}`}
+                style={{ height: '62px' }}
                 className="hover:bg-background transition-colors duration-100 group"
               >
                 {columns.map((col) => (
                   <td
                     key={col.key}
-                    className={`px-4 py-3 font-normal align-middle ${col.className || ''}`}
+                    style={{ height: '62px' }}
+                    className={`px-4 py-2 font-normal align-middle ${col.className || ''}`}
                   >
                     {col.render ? col.render(item) : (item as any)[col.key]}
+                  </td>
+                ))}
+              </tr>
+            ))}
+            {/* Stable spacing placeholder rows so pagination footer never jumps */}
+            {Array.from({ length: Math.max(0, pageSize - currentItems.length) }).map((_, idx) => (
+              <tr
+                key={`placeholder-${idx}`}
+                style={{ height: '62px' }}
+                className="border-transparent pointer-events-none select-none"
+                aria-hidden="true"
+              >
+                {columns.map((col) => (
+                  <td
+                    key={col.key}
+                    style={{ height: '62px' }}
+                    className={`px-4 py-2 text-transparent select-none ${col.className || ''}`}
+                  >
+                    &nbsp;
                   </td>
                 ))}
               </tr>
@@ -138,37 +182,57 @@ export function DataTable<T>({
         </table>
       </div>
 
-      {/* Pagination Footer */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between px-4 py-2.5 bg-background border-t border-border text-[12px] text-muted-fg">
-          <span className="tabular-nums">
-            Showing <strong className="text-foreground font-semibold font-mono">{startIndex + 1}</strong> to{' '}
-            <strong className="text-foreground font-semibold font-mono">{Math.min(startIndex + pageSize, data.length)}</strong> of{' '}
-            <strong className="text-foreground font-semibold font-mono">{data.length}</strong> items
-          </span>
-          <div className="flex items-center space-x-1.5">
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              disabled={currentPage === 1}
-              className="p-1.5 rounded-md border border-border bg-surface hover:bg-surface-alt disabled:opacity-30 disabled:hover:bg-surface transition-colors duration-100"
-              aria-label="Previous Page"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-            </button>
-            <span className="px-2 font-semibold text-foreground tabular-nums font-mono text-[11px]">
-              {currentPage} / {totalPages}
-            </span>
-            <button
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="p-1.5 rounded-md border border-border bg-surface hover:bg-surface-alt disabled:opacity-30 disabled:hover:bg-surface transition-colors duration-100"
-              aria-label="Next Page"
-            >
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
+      {/* Pagination Footer (5 records per page) */}
+      <div
+        style={{ minHeight: '48px' }}
+        className="flex flex-wrap items-center justify-between gap-2 px-4 py-2 bg-background border-t border-border text-[12px] text-muted-fg"
+      >
+        <span className="tabular-nums">
+          Showing <strong className="text-foreground font-semibold font-mono">{data.length > 0 ? startIndex + 1 : 0}</strong> to{' '}
+          <strong className="text-foreground font-semibold font-mono">{Math.min(startIndex + pageSize, data.length)}</strong> of{' '}
+          <strong className="text-foreground font-semibold font-mono">{data.length}</strong> records
+        </span>
+        <div className="flex items-center space-x-1.5">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-border bg-surface hover:bg-surface-alt disabled:opacity-30 disabled:hover:bg-surface text-[11px] font-medium text-foreground transition-colors cursor-pointer disabled:cursor-not-allowed"
+            aria-label="Previous Page"
+          >
+            <ChevronLeft className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Prev</span>
+          </button>
+
+          {/* Page Number Pills */}
+          <div className="flex items-center space-x-1">
+            {Array.from({ length: totalPages || 1 }, (_, i) => i + 1).map((pageNum) => (
+              <button
+                key={pageNum}
+                onClick={() => setCurrentPage(pageNum)}
+                className={`min-w-[28px] h-7 px-2 rounded-md text-[11px] font-mono font-bold transition-all cursor-pointer ${
+                  currentPage === pageNum
+                    ? 'bg-sky-500 text-white shadow-xs'
+                    : 'border border-border bg-surface hover:bg-surface-alt text-foreground'
+                }`}
+                aria-label={`Page ${pageNum}`}
+                aria-current={currentPage === pageNum ? 'page' : undefined}
+              >
+                {pageNum}
+              </button>
+            ))}
           </div>
+
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage >= totalPages}
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-border bg-surface hover:bg-surface-alt disabled:opacity-30 disabled:hover:bg-surface text-[11px] font-medium text-foreground transition-colors cursor-pointer disabled:cursor-not-allowed"
+            aria-label="Next Page"
+          >
+            <span className="hidden sm:inline">Next</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }

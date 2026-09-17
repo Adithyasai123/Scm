@@ -742,7 +742,7 @@ export default function DashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-0.5">
         <div className="text-left">
           <h1 className="page-title text-2xl font-bold tracking-tight text-heading">
-            SCM Overview
+            SCM Dashboard
           </h1>
           <p className="page-subtitle text-xs text-muted-fg mt-0.5">
             National telecom cockpit: Hierarchical onboarding, multi-tier commission engines, and pan-India tariff distribution.

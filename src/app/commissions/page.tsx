@@ -18,6 +18,7 @@ import { ZoneSelector } from '@/components/forms/ZoneSelector';
 import { CircleSelector } from '@/components/forms/CircleSelector';
 import { FranchiseTransaction } from '@/types/api';
 import { formatCurrency } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 import {
   Coins,
   Plus,
@@ -28,13 +29,13 @@ import {
   ArrowRight,
   ShieldAlert,
   Percent,
-  X,
   CreditCard,
-  CheckCircle,
-  XCircle,
+  X,
+  ArrowLeft,
 } from 'lucide-react';
 
 export default function CommissionsPage() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const hasCommPerm = useAuthStore((state) => state.hasPermission('commissionPermissions'));
   const [activeTab, setActiveTab] = useState<'FRC' | 'OTF' | 'POSTPAID' | 'LANDLINE' | 'FRANCHISE_BALANCE'>('FRC');
@@ -234,15 +235,15 @@ export default function CommissionsPage() {
       header: 'Commission Category',
       render: (c: any) => (
         <div>
-          <span className="font-bold text-slate-900">{c.category || `${activeTab} Standard Rule`}</span>
-          <div className="text-[10px] font-mono text-slate-400">ID: {c.configId || `COM-${c.id}`}</div>
+          <span className="font-bold text-foreground">{c.category || `${activeTab} Standard Rule`}</span>
+          <div className="text-[10px] font-mono text-muted-fg">ID: {c.configId || `COM-${c.id}`}</div>
         </div>
       ),
     },
     {
       key: 'circleName',
       header: 'Telecom Circle',
-      render: (c) => <span className="text-xs font-semibold text-slate-800">{c.circleName || 'All Circles'}</span>,
+      render: (c) => <span className="text-xs font-semibold text-foreground">{c.circleName || 'All Circles'}</span>,
     },
     {
       key: 'commissionRate',
@@ -252,7 +253,7 @@ export default function CommissionsPage() {
     {
       key: 'bonus',
       header: 'Fixed Bonus',
-      render: (c) => <span className="font-mono text-xs font-semibold text-slate-700">{c.bonus || '₹0'}</span>,
+      render: (c) => <span className="font-mono text-xs font-semibold text-muted-fg">{c.bonus || '₹0'}</span>,
     },
     {
       key: 'status',
@@ -301,8 +302,8 @@ export default function CommissionsPage() {
       header: 'Transaction ID',
       render: (t: any) => (
         <div>
-          <span className="font-bold font-mono text-slate-900 text-xs">{t.id || t.transactionId}</span>
-          <div className="text-[10px] text-slate-400">Date: {t.requestDate || t.requestedDate || '2025-03-12'}</div>
+          <span className="font-bold font-mono text-foreground text-xs">{t.id || t.transactionId}</span>
+          <div className="text-[10px] text-muted-fg">Date: {t.requestDate || t.requestedDate || '2025-03-12'}</div>
         </div>
       ),
     },
@@ -311,15 +312,15 @@ export default function CommissionsPage() {
       header: 'Franchise Entity',
       render: (t: any) => (
         <div>
-          <div className="font-semibold text-slate-800">{t.requestedBy || t.franchiseeName || 'Franchise Partner'}</div>
-          <div className="text-[11px] font-mono text-slate-400">MSISDN: {t.franchiseMsisdn || t.mobileNumber || '9811012345'}</div>
+          <div className="font-semibold text-foreground">{t.requestedBy || t.franchiseeName || 'Franchise Partner'}</div>
+          <div className="text-[11px] font-mono text-muted-fg">MSISDN: {t.franchiseMsisdn || t.mobileNumber || '9811012345'}</div>
         </div>
       ),
     },
     {
       key: 'amount',
       header: 'Requested Balance',
-      render: (t: any) => <span className="font-black font-mono text-slate-900">{formatCurrency(t.amount || 0)}</span>,
+      render: (t: any) => <span className="font-black font-mono text-foreground">{formatCurrency(t.amount || 0)}</span>,
     },
     {
       key: 'status',
@@ -328,9 +329,10 @@ export default function CommissionsPage() {
     },
     {
       key: 'actions',
-      header: 'OTP Approval Governance',
+      header: 'Approval Governance',
+      className: 'text-center',
       render: (t) => (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-center space-x-2">
           {t.status === 'PENDING' ? (
             <>
               <button
@@ -339,23 +341,23 @@ export default function CommissionsPage() {
                   approveTxnOtpAction.initiate();
                 }}
                 type="button"
-                className="inline-flex items-center space-x-1 px-2.5 py-1 text-xs font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/40 dark:text-sky-300 dark:hover:bg-sky-900/50 rounded-lg transition-colors"
+                className="px-3 py-1 text-xs font-semibold text-white bg-sky-600 hover:bg-sky-500 active:bg-sky-700 dark:bg-sky-600 dark:hover:bg-sky-500 rounded-lg shadow-2xs transition-all cursor-pointer"
               >
-                <CheckCircle className="w-3.5 h-3.5" />
-                <span>Approve (OTP)</span>
+                Approve
               </button>
               <button
                 onClick={() => rejectMutation.mutate(String(t.id || t.transactionId || ''))}
                 disabled={rejectMutation.isPending}
                 type="button"
-                className="inline-flex items-center space-x-1 px-2.5 py-1 text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
+                className="px-3 py-1 text-xs font-semibold text-rose-700 dark:text-rose-300 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/50 border border-rose-200 dark:border-rose-800/80 rounded-lg transition-all cursor-pointer"
               >
-                <XCircle className="w-3.5 h-3.5" />
-                <span>Reject</span>
+                Reject
               </button>
             </>
           ) : (
-            <span className="text-[11px] text-slate-400 italic">Settled</span>
+            <span className="inline-flex items-center justify-center px-3.5 py-1 text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/60 rounded-lg cursor-default select-none min-w-[80px]">
+              Settled
+            </span>
           )}
         </div>
       ),
@@ -380,17 +382,29 @@ export default function CommissionsPage() {
     <PermissionGuard permission="commissionPermissions">
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <h1 className="page-title">Commission Engine Configuration</h1>
             <p className="page-subtitle">
               Administer prepaid FRC, OTF incentives, postpaid bill plans, landline broadband retail payouts, and franchise balance approvals.
             </p>
+            <div className="mt-2.5">
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-surface-alt text-foreground text-xs font-semibold transition-colors cursor-pointer shadow-2xs"
+                title="Go Back to Previous Page"
+                aria-label="Go Back"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back</span>
+              </button>
+            </div>
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex flex-wrap items-center gap-2.5">
             <Link
               href="/reports"
-              className="inline-flex items-center space-x-2 px-3.5 py-2 border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold rounded-xl shadow-xs"
+              className="inline-flex items-center space-x-2 px-3.5 py-2 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold rounded-xl shadow-xs transition-colors"
             >
               <CreditCard className="w-4 h-4 text-sky-600 dark:text-sky-400" />
               <span>Reports & Audit &rarr;</span>
@@ -409,7 +423,7 @@ export default function CommissionsPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div className="flex flex-nowrap sm:flex-wrap overflow-x-auto max-w-full gap-2 border-b border-border pb-3 scrollbar-none">
           {[
             { key: 'FRC', label: 'Prepaid FRC (First Recharge)' },
             { key: 'OTF', label: 'Prepaid OTF (Over The Floor)' },
@@ -437,7 +451,7 @@ export default function CommissionsPage() {
             <SearchToolbar
               search={search}
               onSearchChange={setSearch}
-              placeholder="Search franchise top-up transactions by ID, franchise name, or MSISDN..."
+              placeholder="Search..."
               onRefresh={() => refetchTxn()}
               isRefreshing={isTxnFetching}
             />
@@ -456,7 +470,7 @@ export default function CommissionsPage() {
             <SearchToolbar
               search={search}
               onSearchChange={setSearch}
-              placeholder={`Search ${activeTab} commission rules by category, circle, or rate...`}
+              placeholder="Search..."
               onRefresh={() => refetch()}
               isRefreshing={isFetching}
             />
@@ -475,13 +489,13 @@ export default function CommissionsPage() {
         {/* Edit Commission Modal */}
         {editingRule && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-            <div className="w-full max-w-md bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
-              <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+            <div className="w-full max-w-md bg-surface rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+              <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 p-6 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Edit {activeTab} Commission Rule</h3>
-                  <p className="text-xs text-slate-500">ID: {editingRule.configId || editingRule.id}</p>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Edit {activeTab} Commission Rule</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">ID: {editingRule.configId || editingRule.id}</p>
                 </div>
-                <button onClick={() => setEditingRule(null)} className="p-1.5 text-slate-400">
+                <button onClick={() => setEditingRule(null)} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -494,33 +508,33 @@ export default function CommissionsPage() {
                 className="p-6 space-y-4 text-xs"
               >
                 <div>
-                  <label className="block font-semibold mb-1">Commission Category</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Commission Category</label>
                   <input
                     type="text"
                     value={editFormData.category}
                     onChange={(e) => setEditFormData({ ...editFormData, category: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold mb-1">Commission Rate / Percentage</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Commission Rate / Percentage</label>
                   <input
                     type="text"
                     value={editFormData.commissionRate}
                     onChange={(e) => setEditFormData({ ...editFormData, commissionRate: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono font-bold text-sky-600 dark:text-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-mono font-bold text-sky-600 dark:text-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
                     placeholder="e.g. 5.5% or ₹150"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold mb-1">Fixed Bonus Amount</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Fixed Bonus Amount</label>
                   <input
                     type="text"
                     value={editFormData.bonus}
                     onChange={(e) => setEditFormData({ ...editFormData, bonus: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-sky-500 text-slate-900 dark:text-slate-100"
                     placeholder="e.g. ₹50"
                   />
                 </div>
@@ -529,14 +543,14 @@ export default function CommissionsPage() {
                   <button
                     type="button"
                     onClick={() => setEditingRule(null)}
-                    className="px-4 py-2 border rounded-xl text-slate-600 font-bold"
+                    className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={editMutation.isPending}
-                    className="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-bold shadow-sm shadow-sky-600/20"
+                    className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
                   >
                     {editMutation.isPending ? 'Saving...' : 'Update Rule'}
                   </button>
@@ -549,13 +563,13 @@ export default function CommissionsPage() {
         {/* Add Commission Rule Modal with OTP */}
         {isAddOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 overflow-y-auto">
-            <div className="w-full max-w-lg bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8">
-              <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+            <div className="w-full max-w-lg bg-surface rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-8">
+              <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 p-6 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
                 <div>
-                  <h2 className="text-base font-bold text-slate-900">Configure {activeTab} Commission Rule</h2>
-                  <p className="text-xs text-slate-500">6-Step OTP verification pipeline with Zone/Circle targeting</p>
+                  <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Configure {activeTab} Commission Rule</h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">6-Step OTP verification pipeline with Zone/Circle targeting</p>
                 </div>
-                <button onClick={() => setIsAddOpen(false)} className="p-1.5 text-slate-400 hover:text-slate-600">
+                <button onClick={() => setIsAddOpen(false)} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -568,7 +582,7 @@ export default function CommissionsPage() {
                 className="p-6 space-y-4 text-xs"
               >
                 {/* Circulation Scope Mode */}
-                <div className="p-3 bg-sky-50/70 dark:bg-sky-950/40 rounded-xl border border-sky-100 dark:border-sky-800 flex items-center justify-between">
+                <div className="p-3.5 bg-sky-50/70 dark:bg-sky-950/40 rounded-xl border border-sky-200/80 dark:border-sky-800 flex items-center justify-between">
                   <div>
                     <span className="font-bold text-sky-900 dark:text-sky-200 block">Circulation Scope</span>
                     <span className="text-[11px] text-sky-700 dark:text-sky-300">
@@ -578,7 +592,7 @@ export default function CommissionsPage() {
                   <button
                     type="button"
                     onClick={() => setIsBulkMode(!isBulkMode)}
-                    className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-bold text-[11px] transition-colors"
+                    className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-bold text-[11px] transition-colors cursor-pointer"
                   >
                     Switch to {isBulkMode ? 'Single Circle' : 'Bulk Zone'}
                   </button>
@@ -602,11 +616,11 @@ export default function CommissionsPage() {
 
                 {/* Category Selection */}
                 <div>
-                  <label className="block font-semibold mb-1">Commission Category Plan</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Commission Category Plan</label>
                   <select
                     value={formData.categoryId}
                     onChange={(e) => setFormData({ ...formData, categoryId: Number(e.target.value) })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     {(categories || [
                       { id: 1, name: 'Category A (Standard Prepaid/Postpaid)' },
@@ -622,22 +636,22 @@ export default function CommissionsPage() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-semibold mb-1">Master Category ID</label>
+                    <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Master Category ID</label>
                     <input
                       type="number"
                       value={formData.masterCategoryId}
                       onChange={(e) => setFormData({ ...formData, masterCategoryId: Number(e.target.value) })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block font-semibold mb-1">Denomination</label>
+                    <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Denomination</label>
                     <input
                       type="text"
                       value={formData.denomination}
                       onChange={(e) => setFormData({ ...formData, denomination: e.target.value })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                       required
                     />
                   </div>
@@ -645,23 +659,23 @@ export default function CommissionsPage() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-semibold mb-1">Seller Commission</label>
+                    <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Seller Commission</label>
                     <input
                       type="text"
                       value={formData.sellerCommission}
                       onChange={(e) => setFormData({ ...formData, sellerCommission: e.target.value })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono font-bold text-sky-600 dark:text-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-mono font-bold text-sky-600 dark:text-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
                       placeholder="e.g. 4.5"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block font-semibold mb-1">Franchise Commission</label>
+                    <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Franchise Commission</label>
                     <input
                       type="text"
                       value={formData.fraCommission}
                       onChange={(e) => setFormData({ ...formData, fraCommission: e.target.value })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                       placeholder="e.g. 1.0"
                     />
                   </div>
@@ -669,50 +683,50 @@ export default function CommissionsPage() {
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-semibold mb-1">Sub Commission</label>
+                    <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Sub Commission</label>
                     <input
                       type="text"
                       value={formData.subCommission}
                       onChange={(e) => setFormData({ ...formData, subCommission: e.target.value })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                       placeholder="e.g. 0.5"
                     />
                   </div>
                   <div>
-                    <label className="block font-semibold mb-1">TDS</label>
+                    <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">TDS</label>
                     <input
                       type="text"
                       value={formData.tds}
                       onChange={(e) => setFormData({ ...formData, tds: e.target.value })}
-                      className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                       placeholder="e.g. 5.0"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block font-semibold mb-1">Commission Type (DTYPE)</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Commission Type (DTYPE)</label>
                   <select
                     value={formData.dtype}
                     onChange={(e) => setFormData({ ...formData, dtype: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="PERCENTAGE">Percentage (%)</option>
                     <option value="FLAT">Flat Amount (₹)</option>
                   </select>
                 </div>
 
-                <div className="pt-4 flex justify-end space-x-2 border-t border-slate-100">
+                <div className="pt-4 flex justify-end space-x-2 border-t border-slate-100 dark:border-slate-800">
                   <button
                     type="button"
                     onClick={() => setIsAddOpen(false)}
-                    className="px-4 py-2 border rounded-xl text-slate-600 font-bold"
+                    className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-bold shadow-sm shadow-sky-600/20 transition-all"
+                    className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
                   >
                     Proceed to OTP Verification &rarr;
                   </button>

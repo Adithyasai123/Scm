@@ -1,24 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
-  mockZones,
-  mockCircles,
-  mockSSAs,
-  mockUsers as initialUsers,
-  mockDealers as initialDealers,
-  mockPlans as initialPlans,
-  mockCommissions as initialCommissions,
-  mockFranchiseTransactions as initialTransactions,
-  mockMnpList as initialMnpList,
-  mockNumberSeries as initialNumberSeries,
-} from '../../tests/mocks/handlers';
-
-let users = [...initialUsers];
-let dealers = [...initialDealers];
-let plans = [...initialPlans];
-let commissions = [...initialCommissions];
-let transactions = [...initialTransactions];
-let mnpList = [...initialMnpList];
-let numberSeries = [...initialNumberSeries];
+  INITIAL_ZONES as mockZones,
+  INITIAL_CIRCLES as mockCircles,
+  INITIAL_SSAS as mockSSAs,
+  centralStore,
+} from '@/data/centralDataStore';
 
 function wrap(data: any, message = 'Success', status = 'SUCCESS') {
   return NextResponse.json({ status, message, data });
@@ -28,6 +14,14 @@ export async function handleMockApiRequest(req: NextRequest) {
   const url = new URL(req.url);
   const pathname = url.pathname;
   const method = req.method.toUpperCase();
+
+  const users = centralStore.getUsers();
+  const dealers = centralStore.getDealers();
+  const commissions = centralStore.getCommissions();
+  const transactions = centralStore.getTransactions();
+  const plans = centralStore.getPlans();
+  const mnpList = centralStore.getMnpList();
+  const numberSeries = centralStore.getNumberSeries();
 
   // 1. Master Data & Geographic Cascades
   if (pathname.includes('/zones')) {
@@ -189,9 +183,10 @@ export async function handleMockApiRequest(req: NextRequest) {
   if (pathname.includes('/saveCommissionConfig') && method === 'POST') {
     let body: any = {};
     try { body = await req.json(); } catch {}
+    const nextId = Date.now();
     const newRule = {
-      id: commissions.length + 1,
-      configId: `COM-00${commissions.length + 1}`,
+      id: nextId,
+      configId: `COM-${nextId.toString().slice(-4)}`,
       name: `Commission Rule ${commissions.length + 1}`,
       category: body.commissionType ? `${body.commissionType} Rule` : 'Prepaid FRC Rule',
       commissionType: body.commissionType || 'FRC',
@@ -212,15 +207,16 @@ export async function handleMockApiRequest(req: NextRequest) {
       maxAmount: 1000,
       updatedDate: new Date().toISOString().split('T')[0],
     };
-    commissions.unshift(newRule);
+    centralStore.addCommission(newRule as any);
     return wrap({ message: 'Commission configuration committed.', config: newRule });
   }
   if (pathname.includes('/postpaidCommissionConfig') && method === 'POST') {
     let body: any = {};
     try { body = await req.json(); } catch {}
+    const nextId = Date.now();
     const newRule = {
-      id: commissions.length + 1,
-      configId: `COM-00${commissions.length + 1}`,
+      id: nextId,
+      configId: `COM-${nextId.toString().slice(-4)}`,
       name: `Postpaid Rule ${commissions.length + 1}`,
       category: 'Postpaid Activation Rule',
       commissionType: 'POSTPAID',
@@ -234,15 +230,16 @@ export async function handleMockApiRequest(req: NextRequest) {
       status: 'ACTIVE',
       updatedDate: new Date().toISOString().split('T')[0],
     };
-    commissions.unshift(newRule);
+    centralStore.addCommission(newRule as any);
     return wrap({ message: 'Postpaid commission committed.', config: newRule });
   }
   if (pathname.includes('/landlineCommissionConfig') && method === 'POST') {
     let body: any = {};
     try { body = await req.json(); } catch {}
+    const nextId = Date.now();
     const newRule = {
-      id: commissions.length + 1,
-      configId: `COM-00${commissions.length + 1}`,
+      id: nextId,
+      configId: `COM-${nextId.toString().slice(-4)}`,
       name: `Landline Rule ${commissions.length + 1}`,
       category: 'Landline & Fiber Rule',
       commissionType: 'LANDLINE',
@@ -256,7 +253,7 @@ export async function handleMockApiRequest(req: NextRequest) {
       status: 'ACTIVE',
       updatedDate: new Date().toISOString().split('T')[0],
     };
-    commissions.unshift(newRule);
+    centralStore.addCommission(newRule as any);
     return wrap({ message: 'Landline commission committed.', config: newRule });
   }
   if (pathname.includes('/fetchPrepaidOTFCommission')) {
@@ -279,12 +276,13 @@ export async function handleMockApiRequest(req: NextRequest) {
     if (idx !== -1) {
       commissions[idx] = { ...commissions[idx], ...body };
     }
+    centralStore.updateCommission(targetId, body);
     return wrap({ message: 'Commission rule updated.' });
   }
   if (pathname.includes('/deleteCommissionConfig') || pathname.includes('/deletePostpaidCommission') || pathname.includes('/deleteLandlineCommission')) {
     const commissionId = url.searchParams.get('commissionId');
     if (commissionId) {
-      commissions = commissions.filter(c => String(c.id) !== commissionId && c.configId !== commissionId);
+      centralStore.deleteCommission(commissionId);
     }
     return wrap({ message: 'Commission rule removed.' });
   }
@@ -317,6 +315,9 @@ export async function handleMockApiRequest(req: NextRequest) {
     if (idx !== -1) {
       dealers[idx] = { ...dealers[idx], status: body.status };
     }
+    if (body.msisdn) {
+      centralStore.updateDealer(body.msisdn, { status: body.status });
+    }
     return wrap({ message: 'Dealer status modified.' });
   }
   if (pathname.includes('/createDealer') && method === 'POST') {
@@ -340,13 +341,15 @@ export async function handleMockApiRequest(req: NextRequest) {
       panNumber: body.panNumber || 'ABCDE1234F',
       aadharNumber: body.aadharNumber || '123456789012',
     };
-    dealers.unshift(newDealer as any);
+    centralStore.addDealer(newDealer as any);
     return wrap({ message: 'Dealer onboarded successfully', dealer: newDealer });
   }
   if (pathname.includes('/updateDealer') && method === 'POST') {
     return wrap({ message: 'Dealer updated.' });
   }
   if (pathname.includes('/purgeDealer') && method === 'POST') {
+    const msisdn = url.searchParams.get('msisdn');
+    if (msisdn) centralStore.deleteDealer(msisdn);
     return wrap({ message: 'Dealer purged.' });
   }
   if (pathname.includes('/changeDealerHierarchy') && method === 'POST') {
@@ -388,7 +391,7 @@ export async function handleMockApiRequest(req: NextRequest) {
       circleId: body.circleId || 1,
       circleName: 'Delhi Circle',
     };
-    plans.unshift(newPlan as any);
+    centralStore.addPlan(newPlan as any);
     return wrap({ message: 'Plan created successfully.', plan: newPlan });
   }
   if (pathname.includes('/updateplan') && (method === 'PUT' || method === 'POST')) {
@@ -442,6 +445,9 @@ export async function handleMockApiRequest(req: NextRequest) {
     if (idx !== -1) {
       transactions[idx] = { ...transactions[idx], status: 'APPROVED' };
     }
+    if (body.transactionId) {
+      centralStore.approveTransaction(body.transactionId);
+    }
     return wrap({ message: 'Franchise top-up balance approved and credited.' });
   }
   if (pathname.includes('/franchiseAddBalance/reject') && method === 'POST') {
@@ -450,6 +456,9 @@ export async function handleMockApiRequest(req: NextRequest) {
     const idx = transactions.findIndex(t => t.id === body.transactionId);
     if (idx !== -1) {
       transactions[idx] = { ...transactions[idx], status: 'REJECTED' };
+    }
+    if (body.transactionId) {
+      centralStore.rejectTransaction(body.transactionId);
     }
     return wrap({ message: 'Franchise balance request rejected.' });
   }

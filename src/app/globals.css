@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ─────────────────────────────────────────────
-   DESIGN TOKEN SYSTEM — MongoDB Atlas / LeafyGreen Design System
+   DESIGN TOKEN SYSTEM — SCM Telecom Portal Design System
    ───────────────────────────────────────────── */
 
 @theme inline {
-  /* Euclid Circular A (UI) + MongoDB Value Serif (titles) + Source Code Pro (data) */
+  /* Sans (UI) + Serif (titles) + Source Code Pro (data) */
   --font-sans: var(--font-atlas-sans), "Euclid Circular A", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-serif: var(--font-atlas-serif), "MongoDB Value Serif", "Times New Roman", Georgia, serif;
   --font-mono: var(--font-atlas-mono), "Source Code Pro", Menlo, ui-monospace, monospace;
@@ -23,20 +25,20 @@
   --color-muted-fg:      var(--muted-fg);
   --color-heading:       var(--heading);
 
-  /* ── MongoDB Atlas Squared-off Radius System (4-6px buttons/inputs, 8px cards) ── */
+  /* ── Radius System (4-6px buttons/inputs, 8px cards) ── */
   --radius-sm:   4px;   /* Controls, inputs, buttons */
   --radius-md:   6px;   /* Small cards, dropdowns */
   --radius-lg:   8px;   /* Containers, modals, tables */
   --radius-full: 9999px;
 
-  /* ── Shadow Scale (LeafyGreen subtle elevations) ─ */
+  /* ── Shadow Scale ─ */
   --shadow-card:   0 1px 2px 0 rgb(33 49 60 / 0.05);
   --shadow-drawer: -4px 0 24px 0 rgb(0 30 43 / 0.16);
   --shadow-modal:  0 12px 32px -4px rgb(0 30 43 / 0.20);
 }
 
 /* ─────────────────────────────────────────────
-   CSS CUSTOM PROPERTIES (MongoDB Atlas Palette)
+   CSS CUSTOM PROPERTIES (SCM Telecom Palette)
    Light & Dark Mode Support
 ───────────────────────────────────────────── */
 :root {
@@ -154,7 +156,7 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* LeafyGreen type scale — 4px baseline */
+/* Type scale — 4px baseline */
 .page-title {
   font-family: var(--font-serif);
   font-size: 32px;
@@ -196,7 +198,7 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Universal LeafyGreen Smooth Inputs & Form Controls */
+/* Universal Smooth Inputs & Form Controls */
 input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
 select,
 textarea {
@@ -220,7 +222,26 @@ textarea:focus {
   outline: none !important;
 }
 
-/* Accessible LeafyGreen focus ring for buttons/links */
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+.dark select,
+.dark textarea {
+  color-scheme: dark;
+}
+
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):focus,
+.dark select:focus,
+.dark textarea:focus {
+  border-color: #38BDF8 !important;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25) !important;
+  outline: none !important;
+}
+
+.dark select option {
+  background-color: #0E151E;
+  color: #E2E8F0;
+}
+
+/* Accessible focus ring for buttons/links */
 button:focus-visible,
 a:focus-visible {
   outline: 2px solid var(--accent);
@@ -245,63 +266,59 @@ a:focus-visible {
 }
 
 /* ─────────────────────────────────────────────
-   BUTTONS (LeafyGreen aesthetic)
+   BUTTONS
 ───────────────────────────────────────────── */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 0.375rem 0.75rem;
   font-size: 13px;
   font-weight: 500;
-  font-family: var(--font-sans);
+  line-height: 1.25rem;
+  border-radius: 6px;
+  transition: all 150ms ease;
   cursor: pointer;
-  border: 1px solid transparent;
-  line-height: 20px;
-  letter-spacing: 0;
-  transition: background 120ms ease-out, border-color 120ms ease-out;
+  user-select: none;
 }
 
 .btn:disabled {
-  opacity: 0.45;
+  opacity: 0.5;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .btn-primary {
   background: var(--btn-primary-bg);
   color: var(--btn-primary-fg);
-  border-color: var(--btn-primary-bg);
+  font-weight: 600;
 }
-
 .btn-primary:hover:not(:disabled) {
   background: var(--accent-hover);
-  border-color: var(--accent-hover);
 }
 
-.btn-ghost {
-  background: var(--btn-ghost-bg);
-  color: var(--btn-ghost-fg);
-  border-color: var(--btn-ghost-border);
+.btn-secondary {
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
 }
-
-.btn-ghost:hover:not(:disabled) {
-  background: var(--btn-ghost-hover-bg);
+.btn-secondary:hover:not(:disabled) {
+  background: var(--surface-alt);
+  border-color: var(--border);
 }
 
 .btn-danger {
   background: var(--danger-red);
   color: #FFFFFF;
-  border-color: var(--danger-red);
+  font-weight: 600;
 }
-
 .btn-danger:hover:not(:disabled) {
   background: #B82525;
 }
 
 /* ─────────────────────────────────────────────
-   RIGHT-SIDE DRAWER (LeafyGreen Drawer Pattern)
+   RIGHT-SIDE DRAWER
 ───────────────────────────────────────────── */
 .drawer-backdrop {
   position: fixed;

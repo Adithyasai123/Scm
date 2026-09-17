@@ -17,6 +17,7 @@ import { SSASelector } from '@/components/forms/SSASelector';
 import { PermissionGuard } from '@/components/forms/PermissionGuard';
 import { useAuthStore } from '@/stores/authStore';
 import { User, CreateUserPayload } from '@/types/api';
+import { useRouter } from 'next/navigation';
 import {
   UserPlus,
   Shield,
@@ -29,9 +30,11 @@ import {
   Filter,
   CheckCircle2,
   Lock,
+  ArrowLeft,
 } from 'lucide-react';
 
 export default function UsersPage() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const hasUserPerm = useAuthStore((state) => state.hasPermission('userPermissions'));
   const [search, setSearch] = useState('');
@@ -252,8 +255,8 @@ export default function UsersPage() {
       header: 'User / HRMS ID',
       render: (u) => (
         <div>
-          <div className="font-bold text-slate-900">{u.username}</div>
-          <div className="text-[11px] font-mono text-slate-400">HRMS: {u.hrmsId || 'N/A'}</div>
+          <div className="font-bold text-foreground">{u.username}</div>
+          <div className="text-[11px] font-mono text-muted-fg">HRMS: {u.hrmsId || 'N/A'}</div>
         </div>
       ),
     },
@@ -261,7 +264,7 @@ export default function UsersPage() {
       key: 'firstName',
       header: 'Full Name',
       render: (u) => (
-        <span className="font-semibold text-slate-800">
+        <span className="font-semibold text-foreground">
           {u.firstName} {u.lastName}
         </span>
       ),
@@ -269,7 +272,7 @@ export default function UsersPage() {
     {
       key: 'mobileNumber',
       header: 'Mobile',
-      render: (u) => <span className="font-mono text-xs text-slate-600">{u.mobileNumber || 'N/A'}</span>,
+      render: (u) => <span className="font-mono text-xs text-muted-fg">{u.mobileNumber || 'N/A'}</span>,
     },
     {
       key: 'roleName',
@@ -357,12 +360,24 @@ export default function UsersPage() {
     <PermissionGuard permission="userPermissions">
       <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <h1 className="page-title">User Administration</h1>
           <p className="page-subtitle">
             Administer SCM portal operators, hierarchical zone assignments, and 18-point authorization privileges.
           </p>
+          <div className="mt-2.5">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-surface-alt text-foreground text-xs font-semibold transition-colors cursor-pointer shadow-2xs"
+              title="Go Back to Previous Page"
+              aria-label="Go Back"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back</span>
+            </button>
+          </div>
         </div>
         <button
           onClick={() => setIsCreateModalOpen(true)}
@@ -374,48 +389,21 @@ export default function UsersPage() {
         </button>
       </div>
 
-      {/* Filter & Search Bar */}
-      <div className="bg-surface rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 px-5 py-3 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Filter className="w-4 h-4 text-sky-600 dark:text-sky-400" />
-            <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">User Directory Filters & Search</h3>
-          </div>
-          {(search || statusFilter !== 'ALL' || roleFilter !== 'ALL' || zoneFilter !== 'ALL') && (
-            <button
-              onClick={() => {
-                setSearch('');
-                setStatusFilter('ALL');
-                setRoleFilter('ALL');
-                setZoneFilter('ALL');
-              }}
-              className="text-xs text-sky-600 hover:text-sky-700 dark:text-sky-400 font-bold cursor-pointer"
-            >
-              Reset Filters
-            </button>
-          )}
-        </div>
-        <div className="p-4 space-y-3">
-          <SearchToolbar
-            search={search}
-            onSearchChange={setSearch}
-            placeholder="Search by Username, HRMS ID, Name, or Mobile..."
-            onRefresh={() => refetch()}
-            isRefreshing={isFetching}
-          />
-
-          {/* Multi-field Filter Controls */}
-          <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
-            <div className="flex items-center space-x-1 text-slate-500 font-semibold">
-              <Filter className="w-3.5 h-3.5" />
-              <span>Filters:</span>
-            </div>
-
+      {/* Search & Filters Toolbar */}
+      <SearchToolbar
+        search={search}
+        onSearchChange={setSearch}
+        placeholder="Search..."
+        onRefresh={() => refetch()}
+        isRefreshing={isFetching}
+        extraActions={
+          <div className="flex flex-wrap items-center gap-2">
             {/* Status Filter */}
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as any)}
-              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+              className="px-2.5 py-1.5 bg-background border border-border rounded-md text-foreground text-xs font-medium focus:outline-none focus:border-accent focus:bg-surface transition-colors cursor-pointer"
+              aria-label="Filter by Status"
             >
               <option value="ALL">All Statuses</option>
               <option value="1">Active Only</option>
@@ -426,11 +414,12 @@ export default function UsersPage() {
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+              className="px-2.5 py-1.5 bg-background border border-border rounded-md text-foreground text-xs font-medium focus:outline-none focus:border-accent focus:bg-surface transition-colors cursor-pointer"
+              aria-label="Filter by Role"
             >
               <option value="ALL">All Roles</option>
               <option value="1">Super Admin</option>
-              <option value="2">Circle Manager / Ops</option>
+              <option value="2">Circle Manager</option>
               <option value="3">Auditor</option>
             </select>
 
@@ -438,7 +427,8 @@ export default function UsersPage() {
             <select
               value={zoneFilter}
               onChange={(e) => setZoneFilter(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+              className="px-2.5 py-1.5 bg-background border border-border rounded-md text-foreground text-xs font-medium focus:outline-none focus:border-accent focus:bg-surface transition-colors cursor-pointer"
+              aria-label="Filter by Zone"
             >
               <option value="ALL">All Zones</option>
               {zones.data?.map((z) => (
@@ -447,9 +437,24 @@ export default function UsersPage() {
                 </option>
               ))}
             </select>
+
+            {(search || statusFilter !== 'ALL' || roleFilter !== 'ALL' || zoneFilter !== 'ALL') && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch('');
+                  setStatusFilter('ALL');
+                  setRoleFilter('ALL');
+                  setZoneFilter('ALL');
+                }}
+                className="px-2 py-1 text-xs text-sky-600 hover:text-sky-700 dark:text-sky-400 font-semibold cursor-pointer hover:underline"
+              >
+                Reset
+              </button>
+            )}
           </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* Users DataTable */}
       <DataTable
@@ -464,7 +469,7 @@ export default function UsersPage() {
       {/* User View Details Modal */}
       {selectedUserForView && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-          <div className="w-full max-w-2xl bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+          <div className="w-full max-w-2xl bg-surface rounded-3xl shadow-2xl border border-border overflow-hidden">
             <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 p-6 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center text-[13px] shadow-sm shadow-sky-600/30">
@@ -484,7 +489,7 @@ export default function UsersPage() {
 
             <div className="p-6 space-y-6 max-h-[75vh] overflow-y-auto text-xs">
               {/* Profile Details Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-200/80 dark:border-slate-800">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-surface-alt rounded-xl border border-border">
                 <div>
                   <span className="text-slate-400 font-medium">Role</span>
                   <div className="font-bold text-slate-900 dark:text-slate-100 mt-0.5">{selectedUserForView.roleName || 'Operator'}</div>
@@ -543,7 +548,7 @@ export default function UsersPage() {
             <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex justify-end bg-slate-50/50 dark:bg-slate-850">
               <button
                 onClick={() => setSelectedUserForView(null)}
-                className="px-4 py-2 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl cursor-pointer transition-colors"
+                className="px-4 py-2 border border-border dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl cursor-pointer transition-colors"
               >
                 Close
               </button>
@@ -555,7 +560,7 @@ export default function UsersPage() {
       {/* Edit User Modal */}
       {selectedUserForEdit && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+          <div className="w-full max-w-md bg-surface rounded-3xl shadow-2xl border border-border overflow-hidden">
             <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 p-6 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Edit User Profile</h3>
@@ -581,7 +586,7 @@ export default function UsersPage() {
                     required
                     value={editFormData.firstName}
                     onChange={(e) => setEditFormData({ ...editFormData, firstName: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-border dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
                 <div>
@@ -590,7 +595,7 @@ export default function UsersPage() {
                     type="text"
                     value={editFormData.lastName}
                     onChange={(e) => setEditFormData({ ...editFormData, lastName: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-border dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>
@@ -602,7 +607,7 @@ export default function UsersPage() {
                   required
                   value={editFormData.mobileNumber}
                   onChange={(e) => setEditFormData({ ...editFormData, mobileNumber: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-border dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -612,7 +617,7 @@ export default function UsersPage() {
                   type="text"
                   value={editFormData.roleName}
                   onChange={(e) => setEditFormData({ ...editFormData, roleName: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-border dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -622,7 +627,7 @@ export default function UsersPage() {
                   type="text"
                   value={editFormData.address}
                   onChange={(e) => setEditFormData({ ...editFormData, address: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-border dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
@@ -630,7 +635,7 @@ export default function UsersPage() {
                 <button
                   type="button"
                   onClick={() => setSelectedUserForEdit(null)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-colors cursor-pointer"
+                  className="px-4 py-2 border border-border dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -650,27 +655,29 @@ export default function UsersPage() {
       {/* Permissions Modal */}
       {selectedUserForPerms && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-          <div className="w-full max-w-xl bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 p-6 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
+          <div className="w-full max-w-lg bg-surface rounded-3xl shadow-2xl border border-border overflow-hidden">
+            <div className="p-6 bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 border-b border-border flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Manage 18-Point Permissions Matrix</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Fine-grained access control for @{selectedUserForPerms.username}</p>
+                <h3 className="text-sm font-bold text-foreground">
+                  Update Permissions: {selectedUserForPerms.username || selectedUserForPerms.name}
+                </h3>
+                <p className="text-xs text-muted-fg mt-0.5">Toggle authorization flags for this user account</p>
               </div>
-              <button onClick={() => setSelectedUserForPerms(null)} className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+              <button onClick={() => setSelectedUserForPerms(null)} className="p-1 text-muted-fg hover:text-foreground cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+            <div className="p-6 max-h-[60vh] overflow-y-auto">
               <div className="grid grid-cols-2 gap-2 text-xs">
                 {Object.entries(selectedUserForPerms.permissions || {}).map(([key, val]) => {
                   if (typeof val !== 'boolean') return null;
                   return (
                     <label
                       key={key}
-                      className="p-3 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-200/80 dark:border-slate-800 flex items-center justify-between cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      className="p-3 bg-surface-alt rounded-xl border border-border flex items-center justify-between cursor-pointer hover:bg-surface transition-colors"
                     >
-                      <span className="font-semibold text-slate-700 dark:text-slate-300 truncate pr-2">{key}</span>
+                      <span className="font-semibold text-foreground truncate pr-2">{key}</span>
                       <input
                         type="checkbox"
                         checked={val}
@@ -692,10 +699,10 @@ export default function UsersPage() {
               </div>
             </div>
 
-            <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex justify-end space-x-2 bg-slate-50/50 dark:bg-slate-850">
+            <div className="p-4 border-t border-border flex justify-end space-x-2 bg-surface-alt">
               <button
                 onClick={() => setSelectedUserForPerms(null)}
-                className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-colors cursor-pointer"
+                className="px-4 py-2 border border-border dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-colors cursor-pointer"
               >
                 Cancel
               </button>
@@ -759,7 +766,7 @@ export default function UsersPage() {
       {/* Create User Modal */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="w-full max-w-2xl bg-surface rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8">
+          <div className="w-full max-w-2xl bg-surface rounded-3xl shadow-2xl border border-border overflow-hidden my-8">
             <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 p-6 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
               <div>
                 <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">Onboard New Administrative User</h2>
@@ -870,8 +877,8 @@ export default function UsersPage() {
               </div>
 
               {/* Geographic Cascade */}
-              <div className="p-4 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-200/80 dark:border-slate-800 space-y-3">
-                <span className="block text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
+              <div className="p-4 bg-surface-alt rounded-xl border border-border space-y-3">
+                <span className="block text-xs font-bold text-foreground uppercase tracking-wider">
                   Geographical Hierarchy Assignment
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -897,10 +904,10 @@ export default function UsersPage() {
 
               {/* 18 Permissions Toggles */}
               <div className="space-y-2">
-                <span className="block text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
+                <span className="block text-xs font-bold text-foreground uppercase tracking-wider">
                   Initial Permission Privileges
                 </span>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-40 overflow-y-auto p-2 bg-slate-50 dark:bg-slate-850 rounded-xl border border-slate-200 dark:border-slate-800">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-40 overflow-y-auto p-2 bg-surface-alt rounded-xl border border-border">
                   {Object.keys(permissions).map((permKey) => (
                     <label key={permKey} className="flex items-center space-x-2 text-[11px] text-slate-700 dark:text-slate-300 cursor-pointer hover:text-sky-600 transition-colors">
                       <input
@@ -925,6 +932,7 @@ export default function UsersPage() {
                 </button>
                 <button
                   type="submit"
+                  onClick={() => otpAction.initiate()}
                   className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow-sm shadow-sky-600/20 transition-all cursor-pointer"
                 >
                   Verify via OTP & Onboard

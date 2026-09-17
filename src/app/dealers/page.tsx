@@ -16,6 +16,7 @@ import { SSASelector } from '@/components/forms/SSASelector';
 import { PermissionGuard } from '@/components/forms/PermissionGuard';
 import { useAuthStore } from '@/stores/authStore';
 import { Dealer, CreateDealerPayload } from '@/types/api';
+import { useRouter } from 'next/navigation';
 import {
   Store,
   KeyRound,
@@ -30,9 +31,11 @@ import {
   GitFork,
   Check,
   Building2,
+  ArrowLeft,
 } from 'lucide-react';
 
 export default function DealersPage() {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const hasDealerPerm = useAuthStore((state) => state.hasPermission('dealerPermissions'));
   const [search, setSearch] = useState('');
@@ -179,26 +182,30 @@ export default function DealersPage() {
       header: 'Mobile / MSISDN',
       render: (d: any) => (
         <div>
-          <span className="font-mono font-bold text-slate-900">{d.msisdn}</span>
-          <div className="text-[10px] text-slate-400">Type: {d.dealerType}</div>
+          <span className="font-mono font-bold text-foreground">{d.msisdn}</span>
+          <div className="text-[10px] text-muted-fg">Type: {d.dealerType}</div>
         </div>
       ),
     },
     {
       key: 'name',
       header: 'Agency / Dealer Name',
-      render: (d) => <span className="font-semibold text-slate-800">{d.name}</span>,
+      render: (d) => <span className="font-semibold text-foreground">{d.name}</span>,
     },
     {
       key: 'category',
       header: 'Category',
-      render: (d) => <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">{d.category}</span>,
+      render: (d) => (
+        <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700">
+          {d.category}
+        </span>
+      ),
     },
     {
       key: 'franchiseMsisdn',
       header: 'Parent Franchise',
       render: (d: any) => (
-        <span className="text-xs font-mono text-slate-600">
+        <span className="text-xs font-mono text-muted-fg">
           {d.franchiseMsisdn || d.subFranchiseMsisdn || 'Direct Master'}
         </span>
       ),
@@ -294,14 +301,26 @@ export default function DealersPage() {
     <PermissionGuard permission="dealerPermissions">
       <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <h1 className="page-title">Dealer & Franchise Management</h1>
           <p className="page-subtitle">
             Hierarchy distribution trees, MPIN security lifecycle, pre-onboarding duplicate validation, and channel operations.
           </p>
+          <div className="mt-2.5">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-surface-alt text-foreground text-xs font-semibold transition-colors cursor-pointer shadow-2xs"
+              title="Go Back to Previous Page"
+              aria-label="Go Back"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back</span>
+            </button>
+          </div>
         </div>
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-wrap items-center gap-2.5">
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setActiveTab('list')}
@@ -343,7 +362,7 @@ export default function DealersPage() {
           <SearchToolbar
             search={search}
             onSearchChange={setSearch}
-            placeholder="Search by Dealer Name, MSISDN, Category, or Type..."
+            placeholder="Search..."
             onRefresh={() => refetch()}
             isRefreshing={isFetching}
           />
@@ -359,19 +378,19 @@ export default function DealersPage() {
         </div>
       ) : (
         /* Dynamic Dealer Hierarchy Network Tree View */
-        <div className="bg-surface rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div className="bg-surface rounded-[10px] border border-border border-t-2 border-t-sky-500 shadow-xs overflow-hidden">
           {/* Card Header with Distinct Sky Tint */}
-          <div className="bg-gradient-to-r from-sky-50/90 via-slate-50 to-sky-50/40 dark:from-slate-800/90 dark:via-sky-950/30 dark:to-slate-800/80 px-6 py-4 border-b border-sky-100 dark:border-slate-800 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-sky-500/10 via-surface to-sky-500/5 px-6 py-4 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-sky-500/15 border border-sky-500/30 text-sky-600 dark:text-sky-400 rounded-xl">
                 <Network className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Channel Hierarchy Network</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Live distribution mapping: Master Franchise &rarr; Sub-Franchise &rarr; Retailers</p>
+                <h3 className="text-sm font-bold text-foreground">Channel Hierarchy Network</h3>
+                <p className="text-xs text-muted-fg">Live distribution mapping: Master Franchise &rarr; Sub-Franchise &rarr; Retailers</p>
               </div>
             </div>
-            <span className="px-3 py-1 bg-sky-500/10 text-sky-700 dark:text-sky-300 text-xs font-bold rounded-xl border border-sky-200 dark:border-sky-800">
+            <span className="self-start sm:self-auto px-3 py-1 bg-sky-500/10 text-sky-700 dark:text-sky-300 text-xs font-mono font-semibold rounded-full border border-sky-200 dark:border-sky-800">
               {dealerList.length} Total Nodes Connected
             </span>
           </div>
@@ -382,50 +401,85 @@ export default function DealersPage() {
               const childrenSub = subFranchises.filter((sf: any) => sf.franchiseMsisdn === mf.msisdn);
               // Direct retailers under master
               const directRetailers = retailers.filter((r: any) => r.franchiseMsisdn === mf.msisdn);
+              const totalOutlets = childrenSub.reduce((acc: number, sf: any) => {
+                return acc + retailers.filter((r: any) => r.subFranchiseMsisdn === sf.msisdn).length;
+              }, 0) + directRetailers.length + childrenSub.length;
 
               return (
-                <div key={mf.msisdn} className="p-5 bg-slate-50/70 dark:bg-slate-900/50 rounded-xl border border-sky-200/80 dark:border-sky-800/60 space-y-4">
-                  {/* Master Franchise Node */}
-                  <div className="p-4 bg-surface rounded-xl border border-sky-200 dark:border-sky-800 shadow-sm flex items-center justify-between">
+                <div
+                  key={mf.msisdn}
+                  className="p-5 bg-background rounded-xl border border-sky-200/80 dark:border-sky-900/60 shadow-2xs space-y-4"
+                >
+                  {/* Master Franchise Node (Level 1) */}
+                  <div className="p-4 bg-surface rounded-xl border border-sky-200 dark:border-sky-800/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-sky-400 transition-all">
                     <div className="flex items-center space-x-3">
-                      <div className="w-3.5 h-3.5 rounded-full bg-sky-600 ring-4 ring-sky-100 dark:ring-sky-950" />
+                      <div className="w-9 h-9 rounded-xl bg-sky-500/15 text-sky-600 dark:text-sky-400 border border-sky-500/30 flex items-center justify-center shrink-0">
+                        <Building2 className="w-4 h-4" />
+                      </div>
                       <div>
-                        <div className="text-xs font-bold text-slate-900">{mf.name} [Master Franchise]</div>
-                        <div className="text-[11px] font-mono text-slate-500">MSISDN: {mf.msisdn} · Category: {mf.category}</div>
+                        <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+                          <span className="text-xs font-bold text-foreground">{mf.name}</span>
+                          <span className="text-[10px] uppercase font-mono font-bold px-2 py-0.5 rounded-md bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
+                            Master Franchise
+                          </span>
+                        </div>
+                        <div className="text-[11px] font-mono text-muted-fg mt-0.5">
+                          MSISDN: <strong className="text-foreground font-semibold">{mf.msisdn}</strong> · Category: {mf.category}
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 shrink-0">
+                      <span className="text-[11px] font-mono text-muted-fg bg-background px-2.5 py-1 rounded-lg border border-border">
+                        {totalOutlets} Outlets
+                      </span>
                       <StatusBadge status={mf.status} />
                     </div>
                   </div>
 
                   {/* Level 2: Sub-Franchises */}
                   {childrenSub.length > 0 && (
-                    <div className="ml-6 pl-5 border-l-2 border-slate-300 space-y-3">
+                    <div className="ml-4 sm:ml-6 pl-4 sm:pl-5 border-l-2 border-sky-300/60 dark:border-sky-800/60 space-y-3">
                       {childrenSub.map((sf: any) => {
                         const sfRetailers = retailers.filter((r: any) => r.subFranchiseMsisdn === sf.msisdn);
                         return (
                           <div key={sf.msisdn} className="space-y-3">
-                            <div className="p-3.5 bg-surface rounded-xl border border-amber-200 shadow-xs flex items-center justify-between">
+                            <div className="p-3.5 bg-surface rounded-xl border border-amber-200/90 dark:border-amber-900/60 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-amber-400 transition-all">
                               <div className="flex items-center space-x-3">
-                                <div className="w-3 h-3 rounded-full bg-amber-500 ring-4 ring-amber-100" />
+                                <div className="w-8 h-8 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
+                                  <Store className="w-4 h-4" />
+                                </div>
                                 <div>
-                                  <div className="text-xs font-bold text-slate-800">{sf.name} [Sub-Franchise]</div>
-                                  <div className="text-[11px] font-mono text-slate-500">MSISDN: {sf.msisdn}</div>
+                                  <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+                                    <span className="text-xs font-bold text-foreground">{sf.name}</span>
+                                    <span className="text-[10px] uppercase font-mono font-bold px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                                      Sub-Franchise
+                                    </span>
+                                  </div>
+                                  <div className="text-[11px] font-mono text-muted-fg mt-0.5">
+                                    MSISDN: <strong className="text-foreground font-semibold">{sf.msisdn}</strong>
+                                  </div>
                                 </div>
                               </div>
-                              <StatusBadge status={sf.status} />
+                              <div className="flex items-center space-x-2 shrink-0">
+                                <span className="text-[10px] font-mono text-muted-fg bg-background px-2 py-0.5 rounded-md border border-border">
+                                  {sfRetailers.length} Retailers
+                                </span>
+                                <StatusBadge status={sf.status} />
+                              </div>
                             </div>
 
                             {/* Level 3: Retailers under Sub-Franchise */}
                             {sfRetailers.length > 0 && (
-                              <div className="ml-6 pl-5 border-l-2 border-slate-200 space-y-2">
+                              <div className="ml-4 sm:ml-6 pl-4 sm:pl-5 border-l-2 border-slate-200 dark:border-slate-800 space-y-2">
                                 {sfRetailers.map((r: any) => (
-                                  <div key={r.msisdn} className="p-2.5 bg-surface rounded-lg border border-slate-200 flex items-center justify-between text-xs">
+                                  <div
+                                    key={r.msisdn}
+                                    className="p-2.5 bg-surface rounded-lg border border-border flex items-center justify-between text-xs hover:bg-surface-alt transition-colors shadow-2xs"
+                                  >
                                     <div className="flex items-center space-x-2.5">
-                                      <div className="w-2.5 h-2.5 rounded-full bg-sky-500" />
-                                      <span className="text-slate-800 font-semibold">{r.name}</span>
-                                      <span className="text-slate-400 font-mono text-[10px]">({r.msisdn})</span>
+                                      <div className="w-2 h-2 rounded-full bg-sky-500 shrink-0" />
+                                      <span className="text-foreground font-semibold">{r.name}</span>
+                                      <span className="text-muted-fg font-mono text-[11px]">({r.msisdn})</span>
                                     </div>
                                     <StatusBadge status={r.status} />
                                   </div>
@@ -440,14 +494,20 @@ export default function DealersPage() {
 
                   {/* Direct Retailers under Master Franchise */}
                   {directRetailers.length > 0 && (
-                    <div className="ml-6 pl-5 border-l-2 border-slate-200 space-y-2">
-                      <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Direct Retailers</div>
+                    <div className="ml-4 sm:ml-6 pl-4 sm:pl-5 border-l-2 border-slate-200 dark:border-slate-800 space-y-2">
+                      <div className="flex items-center space-x-2 text-[11px] font-bold text-muted-fg uppercase tracking-wider pt-1 mb-1">
+                        <Store className="w-3.5 h-3.5 text-sky-500" />
+                        <span>Direct Retailers ({directRetailers.length})</span>
+                      </div>
                       {directRetailers.map((r: any) => (
-                        <div key={r.msisdn} className="p-2.5 bg-surface rounded-lg border border-slate-200 flex items-center justify-between text-xs">
+                        <div
+                          key={r.msisdn}
+                          className="p-2.5 bg-surface rounded-lg border border-border flex items-center justify-between text-xs hover:bg-surface-alt transition-colors shadow-2xs"
+                        >
                           <div className="flex items-center space-x-2.5">
-                            <div className="w-2.5 h-2.5 rounded-full bg-sky-500" />
-                            <span className="text-slate-800 font-semibold">{r.name}</span>
-                            <span className="text-slate-400 font-mono text-[10px]">({r.msisdn})</span>
+                            <div className="w-2 h-2 rounded-full bg-sky-500 shrink-0" />
+                            <span className="text-foreground font-semibold">{r.name}</span>
+                            <span className="text-muted-fg font-mono text-[11px]">({r.msisdn})</span>
                           </div>
                           <StatusBadge status={r.status} />
                         </div>
@@ -483,23 +543,23 @@ export default function DealersPage() {
               className="p-6 space-y-3 text-xs"
             >
               <div>
-                <label className="block font-semibold mb-1">Agency / Dealer Name *</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Agency / Dealer Name *</label>
                 <input
                   type="text"
                   required
                   value={editFormData.name}
                   onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold mb-1">Category</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Category</label>
                   <select
                     value={editFormData.category}
                     onChange={(e) => setEditFormData({ ...editFormData, category: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="Category A">Category A</option>
                     <option value="Category B">Category B</option>
@@ -507,11 +567,11 @@ export default function DealersPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold mb-1">Dealer Type</label>
+                  <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Dealer Type</label>
                   <select
                     value={editFormData.dealerType}
                     onChange={(e) => setEditFormData({ ...editFormData, dealerType: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="Retailer">Retailer</option>
                     <option value="SubFranchise">Sub-Franchise</option>
@@ -522,12 +582,12 @@ export default function DealersPage() {
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">Parent Franchise MSISDN</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Parent Franchise MSISDN</label>
                 <input
                   type="tel"
                   value={editFormData.franchiseMsisdn}
                   onChange={(e) => setEditFormData({ ...editFormData, franchiseMsisdn: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   placeholder="9811012345"
                 />
               </div>
@@ -536,7 +596,7 @@ export default function DealersPage() {
                 <button
                   type="button"
                   onClick={() => setEditingDealer(null)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 text-xs font-bold transition-colors cursor-pointer"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -575,12 +635,12 @@ export default function DealersPage() {
               className="p-6 space-y-4 text-xs"
             >
               <div>
-                <label className="block font-semibold mb-1">Select New Parent Master Franchise *</label>
+                <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Select New Parent Master Franchise *</label>
                 <select
                   required
                   value={newParentMsisdn}
                   onChange={(e) => setNewParentMsisdn(e.target.value)}
-                  className="w-full p-2.5 bg-slate-50 border rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 >
                   <option value="">-- Choose Parent Franchise --</option>
                   {masterFranchises
@@ -597,7 +657,7 @@ export default function DealersPage() {
                 <button
                   type="button"
                   onClick={() => setHierarchyReassignTarget(null)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 text-xs font-bold transition-colors cursor-pointer"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -741,35 +801,35 @@ export default function DealersPage() {
               className="p-6 space-y-4 max-h-[75vh] overflow-y-auto"
             >
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Agency / Dealer Name *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Agency / Dealer Name *</label>
                 <input
                   type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Metro Cellular Agency"
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">MSISDN (Mobile) *</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">MSISDN (Mobile) *</label>
                   <input
                     type="tel"
                     required
                     value={formData.msisdn}
                     onChange={(e) => setFormData({ ...formData, msisdn: e.target.value })}
                     placeholder="9876543210"
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Dealer Type</label>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Dealer Type</label>
                   <select
                     value={formData.dealerType}
                     onChange={(e) => setFormData({ ...formData, dealerType: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="Retailer">Retailer</option>
                     <option value="SubFranchise">Sub Franchise</option>
@@ -796,7 +856,7 @@ export default function DealersPage() {
 
               {/* PAN Duplicate Check */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">PAN Card Number *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">PAN Card Number *</label>
                 <div className="flex space-x-2">
                   <input
                     type="text"
@@ -807,12 +867,12 @@ export default function DealersPage() {
                       setFormData({ ...formData, panId: e.target.value.toUpperCase() });
                       setPanStatus('idle');
                     }}
-                    className="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs uppercase focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="flex-1 px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs uppercase text-slate-900 dark:text-slate-100 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono"
                   />
                   <button
                     type="button"
                     onClick={handleCheckPan}
-                    className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl cursor-pointer"
+                    className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-xs font-bold rounded-xl cursor-pointer transition-colors"
                   >
                     Verify PAN
                   </button>
@@ -834,7 +894,7 @@ export default function DealersPage() {
 
               {/* Aadhaar Duplicate Check */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Aadhaar UID *</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Aadhaar UID *</label>
                 <div className="flex space-x-2">
                   <input
                     type="text"
@@ -845,12 +905,12 @@ export default function DealersPage() {
                       setFormData({ ...formData, aadharId: e.target.value });
                       setAadharStatus('idle');
                     }}
-                    className="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="flex-1 px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono"
                   />
                   <button
                     type="button"
                     onClick={handleCheckAadhar}
-                    className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl cursor-pointer"
+                    className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-xs font-bold rounded-xl cursor-pointer transition-colors"
                   >
                     Verify Aadhaar
                   </button>
@@ -872,13 +932,13 @@ export default function DealersPage() {
 
               {/* Parent Mapping */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Parent Franchise MSISDN</label>
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Parent Franchise MSISDN</label>
                 <input
                   type="tel"
                   placeholder="9811012345 (Optional)"
                   value={formData.franchiseMsisdn}
                   onChange={(e) => setFormData({ ...formData, franchiseMsisdn: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono"
                 />
               </div>
 
@@ -886,7 +946,7 @@ export default function DealersPage() {
                 <button
                   type="button"
                   onClick={() => setIsRegisterOpen(false)}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl hover:bg-slate-50 transition-colors cursor-pointer"
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>

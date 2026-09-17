@@ -26,13 +26,15 @@ import {
   Radio,
   Users,
   Wallet,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 interface NavItem {
   label: string;
   href: string;
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
-  group: 'Overview' | 'Channel' | 'Admin';
+  group: 'Dashboard' | 'Channel' | 'Admin';
   permission?:
     | 'userPermissions'
     | 'dealerPermissions'
@@ -44,10 +46,10 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   {
-    label: 'Overview',
+    label: 'Dashboard',
     href: '/',
     icon: LayoutDashboard,
-    group: 'Overview',
+    group: 'Dashboard',
   },
   {
     label: 'Dealers',
@@ -104,6 +106,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const [openSections, setOpenSections] = useState<{ channel: boolean; admin: boolean }>({
     channel: true,
@@ -119,6 +122,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setIsMounted(true);
+    // Light mode is default unless user explicitly chose dark
+    const storedTheme = localStorage.getItem('scm_theme');
+    if (storedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      setIsDarkMode(true);
+    } else {
+      document.documentElement.classList.remove('dark');
+      setIsDarkMode(false);
+    }
+
     // Responsive auto-collapse under 1024px
     const handleResize = () => {
       if (window.innerWidth < 1024) {
@@ -136,6 +149,19 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const toggleTheme = () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    if (isDark) {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('scm_theme', 'light');
+      setIsDarkMode(false);
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('scm_theme', 'dark');
+      setIsDarkMode(true);
+    }
+  };
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -157,7 +183,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     return { ...item, hasAccess };
   });
 
-  const overviewItems = navItems.filter((i) => i.group === 'Overview');
+  const dashboardItems = navItems.filter((i) => i.group === 'Dashboard');
   const channelItems = navItems.filter((i) => i.group === 'Channel');
   const adminItems = navItems.filter((i) => i.group === 'Admin');
 
@@ -172,13 +198,13 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <DevPermissionsModal isOpen={isDevPermsOpen} onClose={() => setIsDevPermsOpen(false)} />
 
       {/* ─────────────────────────────────────────────────────────────
-          MOBILE TOP HEADER (< 768px only)
+          MOBILE & TABLET TOP HEADER (< 1024px)
           ───────────────────────────────────────────────────────────── */}
-      <header className="md:hidden h-14 shrink-0 bg-surface border-b border-border px-4 flex items-center justify-between z-30 select-none">
+      <header className="lg:hidden h-14 shrink-0 bg-surface border-b border-border px-4 flex items-center justify-between z-30 select-none">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsMobileMenuOpen(true)}
-            className="p-1.5 text-muted-fg hover:text-heading hover:bg-surface-alt rounded-[4px] transition-colors"
+            className="p-1.5 text-muted-fg hover:text-heading hover:bg-surface-alt rounded-[4px] transition-colors cursor-pointer"
             aria-label="Open Navigation Drawer"
           >
             <Menu className="w-5 h-5" strokeWidth={1.8} />
@@ -192,6 +218,22 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <span className="font-semibold text-[13px] text-heading truncate">National Telecom</span>
           </Link>
         </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="p-1.5 text-muted-fg hover:text-heading hover:bg-surface-alt rounded-md transition-colors shrink-0 cursor-pointer"
+            title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            aria-label={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {isDarkMode ? (
+              <Sun className="w-4.5 h-4.5 text-amber-400" strokeWidth={2} />
+            ) : (
+              <Moon className="w-4.5 h-4.5 text-slate-600" strokeWidth={2} />
+            )}
+          </button>
+        </div>
       </header>
 
       {/* ─────────────────────────────────────────────────────────────
@@ -200,7 +242,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="flex-1 flex min-h-0 overflow-hidden">
         {/* ── Sidebar Rail (Obsidian Dark / Surface) ── */}
         <aside
-          className={`h-full hidden md:flex flex-col shrink-0 border-r border-border bg-surface z-20 transition-all duration-[200ms] ease-out select-none ${
+          className={`h-full hidden lg:flex flex-col shrink-0 border-r border-border bg-surface z-20 transition-all duration-[200ms] ease-out select-none ${
             isCollapsed ? 'w-14' : 'w-64'
           }`}
         >
@@ -219,9 +261,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               )}
             </Link>
           </div>
-          {/* Overview Top Section */}
-          <div className="px-2 pt-3 pb-2 shrink-0 border-b border-border">
-            {overviewItems.map((item) => {
+          {/* Dashboard Top Section */}
+          <div className="px-2 pt-3 pb-1 shrink-0">
+            {dashboardItems.map((item) => {
               const isActive = pathname === item.href;
               const Icon = item.icon;
               return (
@@ -233,7 +275,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       ? 'bg-accent-light text-heading font-medium'
                       : 'text-foreground font-normal hover:bg-surface-alt'
                   }`}
-                  title="Dashboard Overview"
+                  title="Dashboard"
                 >
                   <div className={`flex items-center min-w-0 ${isCollapsed ? '' : 'gap-2.5'}`}>
                     <Icon className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-accent' : 'text-muted-fg group-hover:text-foreground'}`} strokeWidth={1.75} />
@@ -495,20 +537,19 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     </div>
                   </button>
 
-                  {/* Dark Mode Toggle */}
+                  {/* Theme Toggle */}
                   <button
                     type="button"
-                    onClick={() => document.documentElement.classList.toggle('dark')}
-                    className="p-1.5 text-muted-fg hover:text-heading hover:bg-surface rounded-[4px] transition-colors shrink-0"
-                    title="Toggle Dark Mode"
-                    aria-label="Toggle Dark Mode"
+                    onClick={toggleTheme}
+                    className="p-1.5 text-muted-fg hover:text-heading hover:bg-surface rounded-[4px] transition-colors shrink-0 cursor-pointer"
+                    title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                    aria-label={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                   >
-                    <svg className="w-4 h-4 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                    <svg className="w-4 h-4 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
+                    {isDarkMode ? (
+                      <Sun className="w-4 h-4 text-amber-400 hover:text-amber-300" strokeWidth={2} />
+                    ) : (
+                      <Moon className="w-4 h-4 text-slate-600 hover:text-slate-900" strokeWidth={2} />
+                    )}
                   </button>
                 </div>
               ) : (
@@ -523,20 +564,19 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     {displayName ? displayName.charAt(0).toUpperCase() : 'A'}
                   </button>
 
-                  {/* Dark Mode Toggle (Collapsed) */}
+                  {/* Theme Toggle (Collapsed) */}
                   <button
                     type="button"
-                    onClick={() => document.documentElement.classList.toggle('dark')}
-                    className="w-8 h-8 mx-auto flex items-center justify-center text-muted-fg hover:text-heading hover:bg-surface-alt rounded-[6px] transition-colors"
-                    title="Toggle Dark Mode"
-                    aria-label="Toggle Dark Mode"
+                    onClick={toggleTheme}
+                    className="w-8 h-8 mx-auto flex items-center justify-center text-muted-fg hover:text-heading hover:bg-surface-alt rounded-[6px] transition-colors cursor-pointer"
+                    title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                    aria-label={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                   >
-                    <svg className="w-4 h-4 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                    <svg className="w-4 h-4 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
+                    {isDarkMode ? (
+                      <Sun className="w-4 h-4 text-amber-400 hover:text-amber-300" strokeWidth={2} />
+                    ) : (
+                      <Moon className="w-4 h-4 text-slate-600 hover:text-slate-900" strokeWidth={2} />
+                    )}
                   </button>
                 </div>
               )}
@@ -625,7 +665,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </main>
 
           {/* ─────────────────────────────────────────────────────────────
-              MONGODB ATLAS MUTED FOOTER
+              SCM TELECOM PORTAL FOOTER
               ───────────────────────────────────────────────────────────── */}
           <footer className="shrink-0 bg-background border-t border-border px-6 py-2 text-[11px] font-normal leading-4 text-muted-fg flex flex-col sm:flex-row items-center justify-between gap-2 select-none">
             <div className="flex items-center gap-2">
@@ -673,19 +713,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          FLOATING CIRCULAR GREEN SUPPORT BUTTON (Bottom-Right)
-          ───────────────────────────────────────────────────────────── */}
-      <button
-        type="button"
-        onClick={() => setIsHelpModalOpen(true)}
-        className="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full bg-accent text-white shadow-lg flex items-center justify-center hover:bg-[#0369A1] transition-all hover:scale-105 active:scale-95 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#0284C7]/40"
-        title="SCM Support & Help Center"
-        aria-label="Open support and help center"
-      >
-        <HelpCircle className="w-5 h-5" strokeWidth={2} />
-      </button>
-
-      {/* ─────────────────────────────────────────────────────────────
           HELP / KNOWLEDGE BASE MODAL
           ───────────────────────────────────────────────────────────── */}
       {isHelpModalOpen && (
@@ -711,17 +738,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="p-5 space-y-4 text-xs text-foreground">
-              <div className="p-3 bg-accent/10 border border-[#0284C7]/20 rounded-[6px] text-accent space-y-1">
-                <div className="font-bold flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>MongoDB Atlas / LeafyGreen Design Guidelines</span>
-                </div>
-                <p className="text-[11px] text-heading/80 leading-relaxed">
-                  This portal follows the MongoDB Atlas &quot;Clusters&quot; page visual language: light navigation rail,
-                  serif display headings, electric sky blue (#38BDF8 / #0284C7) brand accents, and pale sky blue active states.
-                </p>
-              </div>
-
               <div className="space-y-2">
                 <div className="font-bold text-heading text-xs uppercase tracking-wider text-[11px]">
                   Key Documentation Links
@@ -752,7 +768,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   </li>
                   <li className="px-3 py-2 flex items-center justify-between hover:bg-background">
                     <span className="font-medium">Telecom API Registry &amp; Interceptors</span>
-                    <span className="text-accent font-semibold text-[11px]">MSW Mock Active</span>
+                    <span className="text-accent font-semibold text-[11px]">Connected &amp; Active</span>
                   </li>
                 </ul>
               </div>
@@ -772,10 +788,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* ─────────────────────────────────────────────────────────────
-          MOBILE NAVIGATION DRAWER (< 768px)
+          MOBILE & TABLET NAVIGATION DRAWER (< 1024px)
           ───────────────────────────────────────────────────────────── */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-[#001E2B]/50 backdrop-blur-xs flex animate-in fade-in duration-150">
+        <div className="lg:hidden fixed inset-0 z-50 bg-[#001E2B]/50 backdrop-blur-xs flex animate-in fade-in duration-150">
           <div className="w-72 bg-surface h-full shadow-2xl flex flex-col p-4 space-y-4 border-r border-border">
             <div className="flex items-center justify-between pb-3 border-b border-border">
               <div className="flex items-center gap-2">
@@ -846,16 +862,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 </div>
                 <button
                   type="button"
-                  onClick={() => document.documentElement.classList.toggle('dark')}
-                  className="p-1.5 text-muted-fg hover:text-heading hover:bg-surface rounded-[4px] transition-colors"
-                  title="Toggle Dark Mode"
+                  onClick={toggleTheme}
+                  className="p-1.5 text-muted-fg hover:text-heading hover:bg-surface rounded-[4px] transition-colors cursor-pointer"
+                  title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                  aria-label={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                 >
-                  <svg className="w-4 h-4 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                  <svg className="w-4 h-4 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                  </svg>
+                  {isDarkMode ? (
+                    <Sun className="w-4 h-4 text-amber-400 hover:text-amber-300" strokeWidth={2} />
+                  ) : (
+                    <Moon className="w-4 h-4 text-slate-600 hover:text-slate-900" strokeWidth={2} />
+                  )}
                 </button>
               </div>
 

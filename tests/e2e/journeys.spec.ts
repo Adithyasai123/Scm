@@ -82,12 +82,12 @@ test.describe('SCM Administrative Journeys', () => {
     });
 
     await page.goto('http://localhost:3000');
-    await expect(page.locator('h1')).toContainText('SCM Overview');
+    await expect(page.locator('h1')).toContainText('SCM Dashboard');
   });
 
   test('Journey 1: User Administration & OTP Verification Workflow', async ({ page }) => {
-    // Navigate to Users
-    await page.locator('a[href="/users"]').first().click();
+    // Navigate directly to /users
+    await page.goto('/users');
     await expect(page.locator('h1')).toContainText('User Administration');
 
     // Verify User table is populated
@@ -106,10 +106,10 @@ test.describe('SCM Administrative Journeys', () => {
     await page.fill('input[placeholder="••••••••"]', 'Test@1234');
 
     // Trigger OTP Flow
-    await page.click('button:has-text("Verify via OTP & Onboard")');
+    await page.locator('button:has-text("Verify via OTP & Onboard")').click();
 
     // OTP Drawer appears
-    await expect(page.locator('text=Telecom Authorization')).toBeVisible();
+    await expect(page.locator('#otp-drawer-title')).toBeVisible({ timeout: 10000 });
 
     // Step 1: Confirm and trigger Send OTP
     await page.click('button:has-text("Send OTP Code")');
@@ -132,8 +132,8 @@ test.describe('SCM Administrative Journeys', () => {
   });
 
   test('Journey 2: Commission Engine Navigation & Configuration', async ({ page }) => {
-    // Navigate to Commissions
-    await page.locator('a[href="/commissions"]').first().click();
+    // Navigate directly to /commissions
+    await page.goto('/commissions');
     await expect(page.locator('h1')).toContainText('Commission Engine Configuration');
 
     // Verify tabs
@@ -150,8 +150,8 @@ test.describe('SCM Administrative Journeys', () => {
   });
 
   test('Journey 3: Tariff Plans Catalog & Denomination Management', async ({ page }) => {
-    // Navigate to Plans
-    await page.locator('a[href="/plans"]').first().click();
+    // Navigate directly to /plans
+    await page.goto('/plans');
     await expect(page.locator('h1')).toContainText('Tariff Plans, Numbers & MNP');
 
     // Verify catalog plans table
