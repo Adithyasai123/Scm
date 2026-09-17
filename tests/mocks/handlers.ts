@@ -13,6 +13,9 @@ import {
   INITIAL_PLANS,
   INITIAL_NUMBER_SERIES,
   INITIAL_MNP_LIST,
+  type DealerRecord,
+  type CommissionConfig,
+  type MnpRecord,
 } from '@/data/centralDataStore';
 
 // Seed mock data from centralized store
@@ -163,14 +166,14 @@ export const handlers = [
   ...createRoute('get', ['/scm-dealer-api/scm-dealer-api/dealerList', '/scm-dealer-api/dealerList'], () => wrap(mockDealers)),
   ...createRoute('post', ['/scm-dealer-api/scm-dealer-api/createDealer', '/scm-dealer-api/createDealer'], async ({ request }: any) => {
     const body = await request.json() as any;
-    const newDealer = {
+    const newDealer: DealerRecord = {
       msisdn: body.msisdn || '9876500000',
       name: body.name || 'New Dealer',
       dealerType: body.dealerType || 'Retailer',
       category: body.category || 'Category A',
       circleId: Number(body.circleId) || 1,
       ssaId: Number(body.ssaId) || 1,
-      status: 'ACTIVE',
+      status: (body.status === 'INACTIVE' ? 'INACTIVE' : 'ACTIVE') as 'ACTIVE' | 'INACTIVE',
       panId: body.panId || '',
       aadharId: body.aadharId || '',
       franchiseMsisdn: body.franchiseMsisdn || '',
@@ -216,9 +219,10 @@ export const handlers = [
   ...createRoute('post', ['/scm-dealer-api/scm-dealer-api/dealerStatusChange', '/scm-dealer-api/dealerStatusChange'], ({ request }: any) => {
     const url = new URL(request.url);
     const msisdn = url.searchParams.get('msisdn');
-    const status = url.searchParams.get('status') || 'ACTIVE';
-    mockDealers = mockDealers.map(d => (d.msisdn === msisdn ? { ...d, status } : d));
-    return wrap({ message: 'Dealer status updated', status });
+    const statusParam = url.searchParams.get('status') || 'ACTIVE';
+    const statusVal: 'ACTIVE' | 'INACTIVE' = statusParam === 'INACTIVE' ? 'INACTIVE' : 'ACTIVE';
+    mockDealers = mockDealers.map(d => (d.msisdn === msisdn ? { ...d, status: statusVal } : d));
+    return wrap({ message: 'Dealer status updated', status: statusVal });
   }),
   ...createRoute('post', ['/scm-dealer-api/scm-dealer-api/purgeDealer', '/scm-dealer-api/purgeDealer'], ({ request }: any) => {
     const url = new URL(request.url);
@@ -251,7 +255,7 @@ export const handlers = [
   // Commission Management APIs
   ...createRoute('post', ['/scm-plans-api/scm-product-api/saveCommissionConfig', '/scm-product-api/saveCommissionConfig'], async ({ request }: any) => {
     const body = await request.json() as any;
-    const newConfig = {
+    const newConfig: CommissionConfig = {
       id: mockCommissions.length + 1,
       configId: `COM-00${mockCommissions.length + 1}`,
       category: body.type ? `Prepaid ${body.type}` : 'Standard Commission',
@@ -273,7 +277,7 @@ export const handlers = [
   }),
   ...createRoute('post', ['/scm-plans-api/scm-product-api/postpaidCommissionConfig', '/scm-product-api/postpaidCommissionConfig'], async ({ request }: any) => {
     const body = await request.json() as any;
-    const newConfig = {
+    const newConfig: CommissionConfig = {
       id: mockCommissions.length + 1,
       configId: `COM-00${mockCommissions.length + 1}`,
       category: 'Postpaid Plan',
@@ -292,7 +296,7 @@ export const handlers = [
   }),
   ...createRoute('post', ['/scm-plans-api/scm-product-api/landlineCommissionConfig', '/scm-product-api/landlineCommissionConfig'], async ({ request }: any) => {
     const body = await request.json() as any;
-    const newConfig = {
+    const newConfig: CommissionConfig = {
       id: mockCommissions.length + 1,
       configId: `COM-00${mockCommissions.length + 1}`,
       category: 'Landline Broadband',
@@ -400,7 +404,7 @@ export const handlers = [
   }),
   ...createRoute('post', ['/scm-db-api/masterdata-db-api/savemnp', '/masterdata-db-api/savemnp'], async ({ request }: any) => {
     const body = await request.json() as any;
-    const newMnp = {
+    const newMnp: MnpRecord = {
       id: `MNP-${100 + mockMnpList.length + 1}`,
       msisdn: body.msisdn || '9876512345',
       donorOperator: body.donorOperator || 'Airtel',

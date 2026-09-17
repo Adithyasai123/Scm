@@ -15,6 +15,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'next/navigation';
 import { FileText, Wallet, ArrowUpRight, Loader2, ArrowLeft } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
+import { FranchiseTransaction } from '@/types/api';
 
 export default function ReportsPage() {
   const router = useRouter();
