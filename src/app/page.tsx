@@ -57,6 +57,7 @@ function BaseStatCard({
   accentColor,
   href,
   urgent = false,
+  sparkData,
 }: any) {
   return (
     <Link
@@ -94,8 +95,29 @@ function BaseStatCard({
           </div>
         </div>
         <div className="text-xs font-semibold text-heading mt-0.5 truncate">{title}</div>
-        <div className="text-[10px] font-normal text-muted-fg truncate leading-tight">
-          {subtitle}
+        <div className="flex items-end justify-between gap-2 mt-1">
+          <div className="text-[10px] font-normal text-muted-fg truncate leading-tight">
+            {subtitle}
+          </div>
+          {sparkData && sparkData.length > 0 && (
+            <div className="flex items-end gap-[2px] h-4 w-12 shrink-0 opacity-80 group-hover:opacity-100 transition-opacity" title="Velocity Trend">
+              {sparkData.map((v: number, i: number) => {
+                const max = Math.max(...sparkData, 1);
+                const pct = Math.round((v / max) * 100);
+                const isLast = i === sparkData.length - 1;
+                return (
+                  <div
+                    key={i}
+                    className="flex-1 rounded-xs"
+                    style={{
+                      height: `${Math.max(pct, 20)}%`,
+                      backgroundColor: isLast ? accentColor : `${accentColor}40`,
+                    }}
+                  />
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </Link>
@@ -163,6 +185,7 @@ function PendingApprovalsCard() {
       icon={Clock}
       badgeIcon={AlertCircle}
       accentColor={pending > 0 ? '#FF6B6B' : '#38BDF8'}
+      sparkData={[3, 5, 2, 7, 4, pending]}
     />
   );
 }
@@ -198,6 +221,7 @@ function ActiveDealersCard() {
       icon={Store}
       badgeIcon={Building2}
       accentColor="#38BDF8"
+      sparkData={[8, 10, 12, 11, 14, active]}
     />
   );
 }
@@ -233,6 +257,7 @@ function TotalOperatorsCard() {
       icon={Users}
       badgeIcon={ShieldCheck}
       accentColor="#38BDF8"
+      sparkData={[4, 4, 5, 5, 6, total]}
     />
   );
 }
@@ -266,6 +291,7 @@ function CommissionRulesCard() {
       icon={Coins}
       badgeIcon={Percent}
       accentColor="#A78BFA"
+      sparkData={[2, 3, 4, 3, 5, list.length]}
     />
   );
 }
@@ -299,6 +325,7 @@ function TariffCatalogCard() {
       icon={Radio}
       badgeIcon={Smartphone}
       accentColor="#F59E0B"
+      sparkData={[10, 12, 11, 15, 14, list.length]}
     />
   );
 }
@@ -656,7 +683,7 @@ function RecentActivityFeed() {
   if (!mounted || !hasPerm) return null;
 
   return (
-    <div className="lg:col-span-2 bg-surface rounded-lg border border-border shadow-xs p-3.5 flex flex-col">
+    <div className="bg-surface rounded-lg border border-border shadow-xs p-3.5 flex flex-col h-full">
       <div className="flex items-center justify-between pb-2.5 border-b border-border shrink-0">
         <div className="flex items-center gap-2.5">
           <div className="p-1.5 bg-surface-alt text-muted-fg rounded-lg">
@@ -769,72 +796,67 @@ export default function DashboardPage() {
         <TariffCatalogCard />
       </div>
 
-      {/* CHARTS ROW: Advanced Line Graph + Bar + Donut, fits cleanly in viewport */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-2.5">
-        {/* Advanced Revenue & Incentive Velocity (Area/Line Graph) */}
-        <div className="lg:col-span-6">
-          <AdvancedTrendChart />
-        </div>
-        {/* Geographic Telemetry Bar Chart */}
-        <div className="lg:col-span-3">
-          <DealerZoneChart />
-        </div>
-        {/* Commission Allocation Donut Chart */}
-        <div className="lg:col-span-3">
+      {/* ROW 1 OF CHARTS: Revenue & Incentive Velocity AND Geographic Telemetry */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 items-stretch">
+        <AdvancedTrendChart />
+        <DealerZoneChart />
+      </div>
+
+      {/* ROW 2 OF CHARTS: Commission Allocation AND Live Franchise Requests */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch">
+        <div className="lg:col-span-4">
           <CommissionPieChart />
+        </div>
+        <div className="lg:col-span-8">
+          <RecentActivityFeed />
         </div>
       </div>
 
-      {/* BOTTOM SECTION: Live Franchise Requests & Quick Console Toolbar */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2.5">
-        <RecentActivityFeed />
-
-        {/* Quick Operations Console */}
-        <div className="bg-surface rounded-lg border border-border shadow-xs p-3.5 space-y-2.5 flex flex-col">
-          <div className="flex items-center gap-2 pb-2 border-b border-border shrink-0">
-            <div className="p-1 bg-accent/10 text-accent rounded">
-              <Layers className="w-3.5 h-3.5" strokeWidth={2} />
-            </div>
-            <div>
-              <h3 className="section-title text-xs font-bold text-heading">Console Toolbar</h3>
-              <p className="text-[10px] text-muted-fg">Administrative shortcuts</p>
-            </div>
+      {/* CONSOLE TOOLBAR AT BOTTOM */}
+      <div className="bg-surface rounded-lg border border-border shadow-xs p-3.5">
+        <div className="flex items-center gap-2 pb-2 border-b border-border mb-2.5">
+          <div className="p-1 bg-accent/10 text-accent rounded">
+            <Layers className="w-3.5 h-3.5" strokeWidth={2} />
           </div>
-
-          <div className="space-y-1.5 flex-1">
-            <Link href="/dealers" className="flex items-center justify-between p-2 rounded-lg bg-surface-alt hover:bg-accent/10 border border-border hover:border-accent/30 transition-all group">
-              <div className="flex items-center gap-2">
-                <Store className="w-3.5 h-3.5 text-accent" strokeWidth={2} />
-                <div>
-                  <div className="text-xs font-semibold text-heading">Dealer Management</div>
-                  <div className="text-[9px] text-muted-fg">Register & verify retail outlets</div>
-                </div>
-              </div>
-              <ArrowUpRight className="w-3 h-3 text-muted-fg group-hover:text-accent transition-colors" />
-            </Link>
-
-            <Link href="/users" className="flex items-center justify-between p-2 rounded-lg bg-surface-alt hover:bg-accent/10 border border-border hover:border-accent/30 transition-all group">
-              <div className="flex items-center gap-2">
-                <Users className="w-3.5 h-3.5 text-accent" strokeWidth={2} />
-                <div>
-                  <div className="text-xs font-semibold text-heading">User Administration</div>
-                  <div className="text-[9px] text-muted-fg">RBAC permissions matrix</div>
-                </div>
-              </div>
-              <ArrowUpRight className="w-3 h-3 text-muted-fg group-hover:text-accent transition-colors" />
-            </Link>
-
-            <Link href="/commissions" className="flex items-center justify-between p-2 rounded-lg bg-surface-alt hover:bg-amber-500/10 border border-border hover:border-amber-500/30 transition-all group">
-              <div className="flex items-center gap-2">
-                <Coins className="w-3.5 h-3.5 text-amber-400" strokeWidth={2} />
-                <div>
-                  <div className="text-xs font-semibold text-heading">Commission Engine</div>
-                  <div className="text-[9px] text-muted-fg">FRC, OTF & postpaid slabs</div>
-                </div>
-              </div>
-              <ArrowUpRight className="w-3 h-3 text-muted-fg group-hover:text-amber-400 transition-colors" />
-            </Link>
+          <div>
+            <h3 className="section-title text-xs font-bold text-heading">Console Toolbar</h3>
+            <p className="text-[10px] text-muted-fg">Administrative shortcuts</p>
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <Link href="/dealers" className="flex items-center justify-between p-2.5 rounded-lg bg-surface-alt hover:bg-accent/10 border border-border hover:border-accent/30 transition-all group">
+            <div className="flex items-center gap-2">
+              <Store className="w-3.5 h-3.5 text-accent" strokeWidth={2} />
+              <div>
+                <div className="text-xs font-semibold text-heading">Dealer Management</div>
+                <div className="text-[9px] text-muted-fg">Register & verify retail outlets</div>
+              </div>
+            </div>
+            <ArrowUpRight className="w-3.5 h-3.5 text-muted-fg group-hover:text-accent transition-colors" />
+          </Link>
+
+          <Link href="/users" className="flex items-center justify-between p-2.5 rounded-lg bg-surface-alt hover:bg-accent/10 border border-border hover:border-accent/30 transition-all group">
+            <div className="flex items-center gap-2">
+              <Users className="w-3.5 h-3.5 text-accent" strokeWidth={2} />
+              <div>
+                <div className="text-xs font-semibold text-heading">User Administration</div>
+                <div className="text-[9px] text-muted-fg">RBAC permissions matrix</div>
+              </div>
+            </div>
+            <ArrowUpRight className="w-3.5 h-3.5 text-muted-fg group-hover:text-accent transition-colors" />
+          </Link>
+
+          <Link href="/commissions" className="flex items-center justify-between p-2.5 rounded-lg bg-surface-alt hover:bg-amber-500/10 border border-border hover:border-amber-500/30 transition-all group">
+            <div className="flex items-center gap-2">
+              <Coins className="w-3.5 h-3.5 text-amber-400" strokeWidth={2} />
+              <div>
+                <div className="text-xs font-semibold text-heading">Commission Engine</div>
+                <div className="text-[9px] text-muted-fg">FRC, OTF & postpaid slabs</div>
+              </div>
+            </div>
+            <ArrowUpRight className="w-3.5 h-3.5 text-muted-fg group-hover:text-amber-400 transition-colors" />
+          </Link>
         </div>
       </div>
     </div>
